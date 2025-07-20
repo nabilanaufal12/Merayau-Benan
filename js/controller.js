@@ -70,12 +70,27 @@ export const controller = {
       .addEventListener("click", () => this.handleRecommendation("tour"));
   },
 
-  // --- LOGIKA AI TERPUSAT ---
+  // --- LOGIKA AI DIPERBARUI ---
   async callGeminiAPI(prompt, button, resultContainerId) {
+    // GANTI DENGAN API KEY ANDA JIKA SUDAH DI-DEPLOY
+    const apiKey = ""; // <-- KOSONGKAN JIKA MENCOBA DI LOKAL. ISI JIKA SUDAH DI GITHUB.
+
+    // PERBAIKAN: Cek jika API Key dibutuhkan
+    if (
+      !apiKey &&
+      !["localhost", "127.0.0.1", ""].includes(window.location.hostname)
+    ) {
+      view.renderAiResult(
+        resultContainerId,
+        "Konfigurasi Diperlukan",
+        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik. Silakan dapatkan API Key Anda dan masukkan ke dalam file js/controller.js."
+      );
+      return;
+    }
+
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
 
-    const apiKey = ""; // Tidak perlu diisi untuk model flash
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
     const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
 
@@ -85,8 +100,13 @@ export const controller = {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!response.ok) {
+        // Memberikan pesan error yang lebih jelas
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error ${response.status}: ${errorData.error.message}`
+        );
+      }
       const result = await response.json();
       const textResult = result.candidates[0].content.parts[0].text;
       view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
@@ -118,6 +138,7 @@ export const controller = {
       .join("; ");
 
     let contextPrompt = "";
+    // MODIFIKASI: Mengubah konteks lokasi dari "Tanjungpinang" menjadi "Pulau Benan"
     switch (type) {
       case "food":
         contextPrompt = `Anda adalah asisten kuliner untuk layanan lokal di Pulau Benan. Daftar menu yang kami sediakan adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU menu dari daftar tersebut. Berikan jawaban singkat dan menarik, sebutkan nama menunya dengan jelas.`;
@@ -139,7 +160,7 @@ export const controller = {
     this.callGeminiAPI(contextPrompt, buttonElement, resultContainerId);
   },
 
-  // ... (sisa fungsi controller tetap sama) ...
+  // --- LOGIKA FORM DIPERBARUI ---
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },
@@ -150,58 +171,74 @@ export const controller = {
     view.closeModal();
   },
   handleFormSubmit() {
-    const name = document.getElementById("modal-name").value;
-    const phone = document.getElementById("modal-phone").value;
-    const itemName = document.getElementById("modal-item-name").value;
-    const itemType = document.getElementById("modal-item-type").value;
-    let details = "";
-    switch (itemType) {
-      case "food":
-        details = `*Pesanan:* ${itemName}\n*Jumlah/Catatan:* ${
-          document.getElementById("modal-food-details").value
-        }\n*Alamat Antar:* ${
-          document.getElementById("modal-food-address").value
-        }`;
-        break;
-      case "transport":
-        details = `*Layanan:* ${itemName}\n*Jemput:* ${
-          document.getElementById("modal-transport-pickup").value
-        }\n*Tujuan:* ${
-          document.getElementById("modal-transport-destination").value
-        }`;
-        break;
-      case "homestay":
-        details = `*Penginapan:* ${itemName}\n*Check-in:* ${
-          document.getElementById("modal-homestay-checkin").value
-        }\n*Check-out:* ${
-          document.getElementById("modal-homestay-checkout").value
-        }\n*Jumlah Tamu:* ${
-          document.getElementById("modal-homestay-pax").value
-        } orang`;
-        break;
-      case "souvenir":
-        details = `*Produk:* ${itemName}\n*Jumlah/Catatan:* ${
-          document.getElementById("modal-souvenir-details").value
-        }\n*Alamat Antar:* ${
-          document.getElementById("modal-souvenir-address").value
-        }`;
-        break;
-      case "tour":
-        details = `*Paket Wisata:* ${itemName}\n*Tanggal:* ${
-          document.getElementById("modal-tour-date").value
-        }\n*Jumlah Orang:* ${
-          document.getElementById("modal-tour-pax").value
-        } orang`;
-        break;
+    try {
+      const name = document.getElementById("modal-name").value;
+      const phone = document.getElementById("modal-phone").value;
+      const itemName = document.getElementById("modal-item-name").value;
+      const itemType = document.getElementById("modal-item-type").value;
+
+      if (!name || !phone) {
+        alert("Nama dan Nomor HP wajib diisi.");
+        return;
+      }
+
+      let details = "";
+      switch (itemType) {
+        case "food":
+          details = `*Pesanan:* ${itemName}\n*Jumlah/Catatan:* ${
+            document.getElementById("modal-food-details").value
+          }\n*Alamat Antar:* ${
+            document.getElementById("modal-food-address").value
+          }`;
+          break;
+        case "transport":
+          details = `*Layanan:* ${itemName}\n*Jemput:* ${
+            document.getElementById("modal-transport-pickup").value
+          }\n*Tujuan:* ${
+            document.getElementById("modal-transport-destination").value
+          }`;
+          break;
+        case "homestay":
+          details = `*Penginapan:* ${itemName}\n*Check-in:* ${
+            document.getElementById("modal-homestay-checkin").value
+          }\n*Check-out:* ${
+            document.getElementById("modal-homestay-checkout").value
+          }\n*Jumlah Tamu:* ${
+            document.getElementById("modal-homestay-pax").value
+          } orang`;
+          break;
+        case "souvenir":
+          details = `*Produk:* ${itemName}\n*Jumlah/Catatan:* ${
+            document.getElementById("modal-souvenir-details").value
+          }\n*Alamat Antar:* ${
+            document.getElementById("modal-souvenir-address").value
+          }`;
+          break;
+        case "tour":
+          details = `*Paket Wisata:* ${itemName}\n*Tanggal:* ${
+            document.getElementById("modal-tour-date").value
+          }\n*Jumlah Orang:* ${
+            document.getElementById("modal-tour-pax").value
+          } orang`;
+          break;
+      }
+
+      const message =
+        `*-- PESANAN BARU --*\n\nHalo, saya ingin memesan layanan berikut:\n\n*Nama Pemesan:* ${name}\n*No. HP:* ${phone}\n\n*Detail Layanan:*\n${details}\n\nMohon informasinya. Terima kasih!`
+          .trim()
+          .replace(/\n\s+\n/g, "\n\n");
+      const whatsappUrl = `https://wa.me/${
+        model.whatsAppNumber
+      }?text=${encodeURIComponent(message)}`;
+
+      window.open(whatsappUrl, "_blank");
+      view.closeModal();
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert(
+        "Terjadi kesalahan saat membuat pesan WhatsApp. Silakan periksa kembali isian Anda.\n\nError: " +
+          error.message
+      );
     }
-    const message =
-      `\n*-- PESANAN BARU --*\n\nHalo, saya ingin memesan layanan berikut:\n\n*Nama Pemesan:* ${name}\n*No. HP:* ${phone}\n\n*Detail Layanan:*\n${details}\n\nMohon informasinya. Terima kasih!`
-        .trim()
-        .replace(/\n\s+\n/g, "\n\n");
-    const whatsappUrl = `https://wa.me/${
-      model.whatsAppNumber
-    }?text=${encodeURIComponent(message)}`;
-    window.open(whatsappUrl, "_blank");
-    view.closeModal();
   },
 };
