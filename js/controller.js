@@ -72,13 +72,16 @@ export const controller = {
 
   // --- LOGIKA AI DIPERBARUI ---
   async callGeminiAPI(prompt, button, resultContainerId) {
-    // GANTI DENGAN API KEY ANDA JIKA SUDAH DI-DEPLOY
-    const apiKey = ""; // <-- KOSONGKAN JIKA MENCOBA DI LOKAL. ISI JIKA SUDAH DI GITHUB.
+    // ==================================================================
+    // PERBAIKAN PENTING: Masukkan API Key Anda di sini agar berfungsi di GitHub
+    // ==================================================================
+    const apiKey = "AIzaSyAivqToAHuEsCP9LHTxc_xcmKjiUh1n45g"; // <-- DAPATKAN API KEY DARI GOOGLE AI STUDIO DAN PASTE DI SINI
 
-    // PERBAIKAN: Cek jika API Key dibutuhkan
+    // Cek jika API Key dibutuhkan tapi masih kosong
     if (
       !apiKey &&
-      !["localhost", "127.0.0.1", ""].includes(window.location.hostname)
+      window.location.hostname !== "127.0.0.1" &&
+      window.location.hostname !== "localhost"
     ) {
       view.renderAiResult(
         resultContainerId,
@@ -104,10 +107,17 @@ export const controller = {
         // Memberikan pesan error yang lebih jelas
         const errorData = await response.json();
         throw new Error(
-          `HTTP error ${response.status}: ${errorData.error.message}`
+          `HTTP error ${response.status}: ${
+            errorData.error.message || "Unknown error"
+          }`
         );
       }
       const result = await response.json();
+
+      if (!result.candidates || result.candidates.length === 0) {
+        throw new Error("API tidak memberikan respons yang valid.");
+      }
+
       const textResult = result.candidates[0].content.parts[0].text;
       view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
     } catch (error) {
@@ -138,7 +148,6 @@ export const controller = {
       .join("; ");
 
     let contextPrompt = "";
-    // MODIFIKASI: Mengubah konteks lokasi dari "Tanjungpinang" menjadi "Pulau Benan"
     switch (type) {
       case "food":
         contextPrompt = `Anda adalah asisten kuliner untuk layanan lokal di Pulau Benan. Daftar menu yang kami sediakan adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU menu dari daftar tersebut. Berikan jawaban singkat dan menarik, sebutkan nama menunya dengan jelas.`;
