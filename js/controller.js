@@ -70,24 +70,19 @@ export const controller = {
       .addEventListener("click", () => this.handleRecommendation("tour"));
   },
 
-  // --- LOGIKA AI DIPERBARUI ---
+  // --- LOGIKA AI TERPUSAT ---
   async callGeminiAPI(prompt, button, resultContainerId) {
-    // ==================================================================
-    // PERINGATAN KEAMANAN PENTING!
-    // JANGAN PERNAH MENULIS API KEY ANDA SECARA LANGSUNG DI SINI DAN MENGUNGGAHNYA KE GITHUB.
-    // ==================================================================
-    const apiKey = ""; // <-- PASTE API KEY BARU ANDA DI SINI HANYA UNTUK TESTING LOKAL
+    // GANTI DENGAN API KEY ANDA JIKA SUDAH DI-DEPLOY
+    const apiKey = ""; // <-- KOSONGKAN JIKA MENCOBA DI LOKAL. ISI JIKA SUDAH DI GITHUB.
 
-    // Cek jika API Key dibutuhkan tapi masih kosong
     if (
       !apiKey &&
-      window.location.hostname !== "127.0.0.1" &&
-      window.location.hostname !== "localhost"
+      !["localhost", "127.0.0.1", ""].includes(window.location.hostname)
     ) {
       view.renderAiResult(
         resultContainerId,
         "Konfigurasi Diperlukan",
-        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik. Silakan dapatkan API Key Anda dan masukkan ke dalam file js/controller.js."
+        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik."
       );
       return;
     }
@@ -113,11 +108,9 @@ export const controller = {
         );
       }
       const result = await response.json();
-
       if (!result.candidates || result.candidates.length === 0) {
         throw new Error("API tidak memberikan respons yang valid.");
       }
-
       const textResult = result.candidates[0].content.parts[0].text;
       view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
     } catch (error) {
@@ -169,7 +162,6 @@ export const controller = {
     this.callGeminiAPI(contextPrompt, buttonElement, resultContainerId);
   },
 
-  // --- LOGIKA FORM DIPERBARUI ---
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },
@@ -179,8 +171,9 @@ export const controller = {
   handleCloseModal() {
     view.closeModal();
   },
+
+  // --- FUNGSI FORM SUBMIT DIPERBAIKI ---
   handleFormSubmit() {
-    // PERBAIKAN: Menambahkan blok try...catch untuk menangkap error
     try {
       const name = document.getElementById("modal-name").value;
       const phone = document.getElementById("modal-phone").value;
@@ -233,22 +226,10 @@ export const controller = {
           break;
       }
 
-      // MODIFIKASI: Cara membuat pesan yang lebih bersih dan aman
-      const messageParts = [
-        "*PESANAN BARU*",
-        "",
-        "Halo, saya ingin memesan layanan berikut:",
-        "",
-        `*Nama Pemesan:* ${name}`,
-        `*No. HP:* ${phone}`,
-        "",
-        "*Detail Layanan:*",
-        details,
-        "",
-        "Mohon informasinya. Terima kasih!",
-      ];
-
-      const message = messageParts.join("\n");
+      const message =
+        `*-- PESANAN BARU --*\n\nHalo, saya ingin memesan layanan berikut:\n\n*Nama Pemesan:* ${name}\n*No. HP:* ${phone}\n\n*Detail Layanan:*\n${details}\n\nMohon informasinya. Terima kasih!`
+          .trim()
+          .replace(/\n\s+\n/g, "\n\n");
       const whatsappUrl = `https://wa.me/${
         model.whatsAppNumber
       }?text=${encodeURIComponent(message)}`;

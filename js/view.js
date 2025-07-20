@@ -22,12 +22,10 @@ export const view = {
       .join("");
   },
 
-  // --- FUNGSI AI BARU ---
   renderAiResult(containerId, title, content) {
     const container = document.getElementById(containerId);
     if (!container) return;
 
-    // Menghapus hasil sebelumnya
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
@@ -42,7 +40,6 @@ export const view = {
       html += `<h4>${title}</h4>`;
     }
     if (content) {
-      // Mengganti newline dengan <br> untuk tampilan HTML
       const formattedContent = content.replace(/\n/g, "<br>");
       html += `<p>${formattedContent}</p>`;
     }
@@ -61,7 +58,6 @@ export const view = {
     }
   },
 
-  // --- Sisa fungsi view tetap sama ---
   setActivePage(pageId) {
     document
       .querySelectorAll(".page-section")
@@ -82,10 +78,30 @@ export const view = {
     document.getElementById("modal-item-name").value = name;
     document.getElementById("modal-item-type").value = type;
 
+    // --- PERBAIKAN DIMULAI DI SINI ---
+    // 1. Reset semua atribut 'required' dari semua input di dalam modal
+    modal.querySelectorAll("input, textarea").forEach((input) => {
+      input.required = false;
+    });
+    // Pastikan input dasar selalu required
+    document.getElementById("modal-name").required = true;
+    document.getElementById("modal-phone").required = true;
+
+    // 2. Tampilkan field yang sesuai dan tambahkan 'required' hanya pada field yang terlihat
     document
       .querySelectorAll(".specific-fields")
       .forEach((f) => (f.style.display = "none"));
-    document.getElementById(`${type}-fields`).style.display = "block";
+    const activeFieldsContainer = document.getElementById(`${type}-fields`);
+    if (activeFieldsContainer) {
+      activeFieldsContainer.style.display = "block";
+      // Tambahkan 'required' ke input yang dibutuhkan di dalam container yang aktif
+      activeFieldsContainer
+        .querySelectorAll('input[type="date"], input[type="number"]')
+        .forEach((input) => {
+          input.required = true;
+        });
+    }
+    // --- AKHIR PERBAIKAN ---
 
     const submitBtn = document.getElementById("modal-submit-btn");
     submitBtn.className = "btn";
