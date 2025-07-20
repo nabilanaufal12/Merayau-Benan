@@ -12,26 +12,21 @@ export const controller = {
   },
 
   setupEventListeners() {
-    // Event listener untuk form submission
+    // ... (event listener lainnya tetap sama) ...
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
-
-    // Event delegation untuk semua klik navigasi
     document.querySelector(".navbar").addEventListener("click", (e) => {
       const link = e.target.closest("a");
       if (!link) return;
       e.preventDefault();
-
       if (link.classList.contains("nav-logo")) {
         this.handleNavigation("home");
       } else if (link.dataset.page) {
         this.handleNavigation(link.dataset.page);
       }
     });
-
-    // Event delegation untuk semua kartu di halaman utama dan halaman item
     document.querySelector("main").addEventListener("click", (e) => {
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
@@ -40,7 +35,6 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
-
       const serviceCard = e.target.closest(".service-card");
       if (serviceCard) {
         const page = serviceCard.dataset.page;
@@ -48,13 +42,10 @@ export const controller = {
         return;
       }
     });
-
-    // Event listener untuk menutup modal
     const modal = document.getElementById("order-modal");
     modal.querySelector(".close-button").addEventListener("click", () => {
       this.handleCloseModal();
     });
-
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
         this.handleCloseModal();
@@ -79,30 +70,58 @@ export const controller = {
       .addEventListener("click", () => this.handleRecommendation("tour"));
   },
 
-  // --- LOGIKA AI DIPERBARUI UNTUK MEMANGGIL SERVERLESS FUNCTION ---
-  async callSecureApi(prompt, button, resultContainerId) {
+  // --- LOGIKA AI DIPERBARUI ---
+  async callGeminiAPI(prompt, button, resultContainerId) {
+    // ==================================================================
+    // PERINGATAN KEAMANAN PENTING!
+    // JANGAN PERNAH MENULIS API KEY ANDA SECARA LANGSUNG DI SINI DAN MENGUNGGAHNYA KE GITHUB.
+    // ==================================================================
+    const apiKey = ""; // <-- PASTE API KEY BARU ANDA DI SINI HANYA UNTUK TESTING LOKAL
+
+    // Cek jika API Key dibutuhkan tapi masih kosong
+    if (
+      !apiKey &&
+      window.location.hostname !== "127.0.0.1" &&
+      window.location.hostname !== "localhost"
+    ) {
+      view.renderAiResult(
+        resultContainerId,
+        "Konfigurasi Diperlukan",
+        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik. Silakan dapatkan API Key Anda dan masukkan ke dalam file js/controller.js."
+      );
+      return;
+    }
+
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
 
-    // Alamat "pintu belakang rahasia" kita di Netlify
-    const functionUrl = "/.netlify/functions/gemini";
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
 
     try {
-      const response = await fetch(functionUrl, {
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: prompt }), // Kirim prompt ke fungsi kita
+        body: JSON.stringify(payload),
       });
-
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.error || `HTTP error! status: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(
+          `HTTP error ${response.status}: ${
+            errorData.error.message || "Unknown error"
+          }`
+        );
+      }
+      const result = await response.json();
+
+      if (!result.candidates || result.candidates.length === 0) {
+        throw new Error("API tidak memberikan respons yang valid.");
       }
 
-      view.renderAiResult(resultContainerId, "Saran dari AI", data.result);
+      const textResult = result.candidates[0].content.parts[0].text;
+      view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
     } catch (error) {
-      console.error("Error calling secure API:", error);
+      console.error("Error calling Gemini API:", error);
       view.renderAiResult(
         resultContainerId,
         "Oops, terjadi kesalahan!",
@@ -147,9 +166,10 @@ export const controller = {
         break;
     }
 
-    this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
+    this.callGeminiAPI(contextPrompt, buttonElement, resultContainerId);
   },
 
+  // --- LOGIKA FORM DIPERBARUI ---
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },
@@ -160,6 +180,7 @@ export const controller = {
     view.closeModal();
   },
   handleFormSubmit() {
+    // PERBAIKAN: Menambahkan blok try...catch untuk menangkap error
     try {
       const name = document.getElementById("modal-name").value;
       const phone = document.getElementById("modal-phone").value;
@@ -212,10 +233,22 @@ export const controller = {
           break;
       }
 
-      const message =
-        `*-- PESANAN BARU --*\n\nHalo, saya ingin memesan layanan berikut:\n\n*Nama Pemesan:* ${name}\n*No. HP:* ${phone}\n\n*Detail Layanan:*\n${details}\n\nMohon informasinya. Terima kasih!`
-          .trim()
-          .replace(/\n\s+\n/g, "\n\n");
+      // MODIFIKASI: Cara membuat pesan yang lebih bersih dan aman
+      const messageParts = [
+        "*PESANAN BARU*",
+        "",
+        "Halo, saya ingin memesan layanan berikut:",
+        "",
+        `*Nama Pemesan:* ${name}`,
+        `*No. HP:* ${phone}`,
+        "",
+        "*Detail Layanan:*",
+        details,
+        "",
+        "Mohon informasinya. Terima kasih!",
+      ];
+
+      const message = messageParts.join("\n");
       const whatsappUrl = `https://wa.me/${
         model.whatsAppNumber
       }?text=${encodeURIComponent(message)}`;
