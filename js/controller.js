@@ -12,21 +12,26 @@ export const controller = {
   },
 
   setupEventListeners() {
-    // ... (event listener lainnya tetap sama) ...
+    // Event listener untuk form submission
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
+
+    // Event delegation untuk semua klik navigasi
     document.querySelector(".navbar").addEventListener("click", (e) => {
       const link = e.target.closest("a");
       if (!link) return;
       e.preventDefault();
+
       if (link.classList.contains("nav-logo")) {
         this.handleNavigation("home");
       } else if (link.dataset.page) {
         this.handleNavigation(link.dataset.page);
       }
     });
+
+    // Event delegation untuk semua kartu di halaman utama dan halaman item
     document.querySelector("main").addEventListener("click", (e) => {
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
@@ -35,6 +40,7 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
+
       const serviceCard = e.target.closest(".service-card");
       if (serviceCard) {
         const page = serviceCard.dataset.page;
@@ -42,10 +48,13 @@ export const controller = {
         return;
       }
     });
+
+    // Event listener untuk menutup modal
     const modal = document.getElementById("order-modal");
     modal.querySelector(".close-button").addEventListener("click", () => {
       this.handleCloseModal();
     });
+
     modal.addEventListener("click", (e) => {
       if (e.target === modal) {
         this.handleCloseModal();
@@ -70,58 +79,30 @@ export const controller = {
       .addEventListener("click", () => this.handleRecommendation("tour"));
   },
 
-  // --- LOGIKA AI DIPERBARUI ---
-  async callGeminiAPI(prompt, button, resultContainerId) {
-    // ==================================================================
-    // PERBAIKAN PENTING: Masukkan API Key Anda di sini agar berfungsi di GitHub
-    // ==================================================================
-    const apiKey = "AIzaSyAivqToAHuEsCP9LHTxc_xcmKjiUh1n45g"; // <-- DAPATKAN API KEY DARI GOOGLE AI STUDIO DAN PASTE DI SINI
-
-    // Cek jika API Key dibutuhkan tapi masih kosong
-    if (
-      !apiKey &&
-      window.location.hostname !== "127.0.0.1" &&
-      window.location.hostname !== "localhost"
-    ) {
-      view.renderAiResult(
-        resultContainerId,
-        "Konfigurasi Diperlukan",
-        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik. Silakan dapatkan API Key Anda dan masukkan ke dalam file js/controller.js."
-      );
-      return;
-    }
-
+  // --- LOGIKA AI DIPERBARUI UNTUK MEMANGGIL SERVERLESS FUNCTION ---
+  async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+    // Alamat "pintu belakang rahasia" kita di Netlify
+    const functionUrl = "/.netlify/functions/gemini";
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(functionUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ prompt: prompt }), // Kirim prompt ke fungsi kita
       });
+
+      const data = await response.json();
+
       if (!response.ok) {
-        // Memberikan pesan error yang lebih jelas
-        const errorData = await response.json();
-        throw new Error(
-          `HTTP error ${response.status}: ${
-            errorData.error.message || "Unknown error"
-          }`
-        );
-      }
-      const result = await response.json();
-
-      if (!result.candidates || result.candidates.length === 0) {
-        throw new Error("API tidak memberikan respons yang valid.");
+        throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
 
-      const textResult = result.candidates[0].content.parts[0].text;
-      view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
+      view.renderAiResult(resultContainerId, "Saran dari AI", data.result);
     } catch (error) {
-      console.error("Error calling Gemini API:", error);
+      console.error("Error calling secure API:", error);
       view.renderAiResult(
         resultContainerId,
         "Oops, terjadi kesalahan!",
@@ -166,10 +147,9 @@ export const controller = {
         break;
     }
 
-    this.callGeminiAPI(contextPrompt, buttonElement, resultContainerId);
+    this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
 
-  // --- LOGIKA FORM DIPERBARUI ---
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },
