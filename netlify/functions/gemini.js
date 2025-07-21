@@ -5,6 +5,13 @@ exports.handler = async function (event, context) {
   // 1. Ambil API Key dari environment variable yang aman di Netlify
   const apiKey = process.env.GEMINI_API_KEY;
 
+  if (!apiKey) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "API Key belum diatur di server." }),
+    };
+  }
+
   // 2. Ambil prompt yang dikirim dari website Anda
   const { prompt } = JSON.parse(event.body);
 
@@ -26,19 +33,19 @@ exports.handler = async function (event, context) {
       body: JSON.stringify(payload),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json();
+      console.error("Error from Google API:", data);
       return {
         statusCode: response.status,
         body: JSON.stringify({
-          error:
-            errorData.error.message || "Terjadi kesalahan pada API Google.",
+          error: data.error.message || "Terjadi kesalahan pada API Google.",
         }),
       };
     }
 
-    const result = await response.json();
-    const textResult = result.candidates[0].content.parts[0].text;
+    const textResult = data.candidates[0].content.parts[0].text;
 
     // 4. Kirim kembali hasilnya ke website Anda
     return {
@@ -46,6 +53,7 @@ exports.handler = async function (event, context) {
       body: JSON.stringify({ result: textResult }),
     };
   } catch (error) {
+    console.error("Internal function error:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({ error: error.message }),

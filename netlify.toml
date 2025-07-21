@@ -1,0 +1,12 @@
+# netlify.toml
+# File konfigurasi untuk Netlify
+
+[build]
+  # Perintah build tidak diperlukan untuk situs statis
+  command = ""
+  # Folder utama yang akan di-deploy
+  publish = "/"
+
+[functions]
+  # Direktori tempat Netlify akan menemukan serverless function Anda
+  directory = "netlify/functions/"
