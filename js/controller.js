@@ -12,22 +12,34 @@ export const controller = {
   },
 
   setupEventListeners() {
-    // ... (event listener lainnya tetap sama) ...
+    // Event listener untuk form submission
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
-    document.querySelector(".navbar").addEventListener("click", (e) => {
-      const link = e.target.closest("a");
-      if (!link) return;
-      e.preventDefault();
-      if (link.classList.contains("nav-logo")) {
-        this.handleNavigation("home");
-      } else if (link.dataset.page) {
-        this.handleNavigation(link.dataset.page);
+
+    // PERBAIKAN: Menggunakan event delegation yang lebih andal untuk semua klik
+    document.body.addEventListener("click", (e) => {
+      const navLink = e.target.closest(".nav-links a");
+      if (navLink) {
+        e.preventDefault();
+        this.handleNavigation(navLink.dataset.page);
+        return;
       }
-    });
-    document.querySelector("main").addEventListener("click", (e) => {
+
+      const navLogo = e.target.closest(".nav-logo");
+      if (navLogo) {
+        e.preventDefault();
+        this.handleNavigation("home");
+        return;
+      }
+
+      const serviceCard = e.target.closest(".service-card");
+      if (serviceCard) {
+        this.handleNavigation(serviceCard.dataset.page);
+        return;
+      }
+
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
         const type = itemButton.dataset.type;
@@ -35,86 +47,48 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
-      const serviceCard = e.target.closest(".service-card");
-      if (serviceCard) {
-        const page = serviceCard.dataset.page;
-        this.handleNavigation(page);
+
+      const aiButton = e.target.closest(".ai-input-group button");
+      if (aiButton) {
+        const type = aiButton.id.replace("-ai-btn", "");
+        this.handleRecommendation(type);
+        return;
+      }
+
+      const closeModalButton = e.target.closest(".close-button");
+      if (closeModalButton) {
+        this.handleCloseModal();
+        return;
+      }
+
+      const modalBackground = e.target.closest("#order-modal");
+      if (modalBackground === e.target) {
+        this.handleCloseModal();
         return;
       }
     });
-    const modal = document.getElementById("order-modal");
-    modal.querySelector(".close-button").addEventListener("click", () => {
-      this.handleCloseModal();
-    });
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        this.handleCloseModal();
-      }
-    });
-
-    // Event listener untuk semua tombol AI
-    document
-      .getElementById("food-ai-btn")
-      .addEventListener("click", () => this.handleRecommendation("food"));
-    document
-      .getElementById("transport-ai-btn")
-      .addEventListener("click", () => this.handleRecommendation("transport"));
-    document
-      .getElementById("homestay-ai-btn")
-      .addEventListener("click", () => this.handleRecommendation("homestay"));
-    document
-      .getElementById("souvenir-ai-btn")
-      .addEventListener("click", () => this.handleRecommendation("souvenir"));
-    document
-      .getElementById("tour-ai-btn")
-      .addEventListener("click", () => this.handleRecommendation("tour"));
   },
 
-  // --- LOGIKA AI TERPUSAT ---
-  async callGeminiAPI(prompt, button, resultContainerId) {
-    // GANTI DENGAN API KEY ANDA JIKA SUDAH DI-DEPLOY
-    const apiKey = ""; // <-- KOSONGKAN JIKA MENCOBA DI LOKAL. ISI JIKA SUDAH DI GITHUB.
-
-    if (
-      !apiKey &&
-      !["localhost", "127.0.0.1", ""].includes(window.location.hostname)
-    ) {
-      view.renderAiResult(
-        resultContainerId,
-        "Konfigurasi Diperlukan",
-        "Fitur AI memerlukan API Key dari Google AI Studio agar berfungsi di website publik."
-      );
-      return;
-    }
-
+  // --- LOGIKA AI ---
+  async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-    const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+    const functionUrl = "/.netlify/functions/gemini";
 
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(functionUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ prompt: prompt }),
       });
+      const data = await response.json();
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(
-          `HTTP error ${response.status}: ${
-            errorData.error.message || "Unknown error"
-          }`
-        );
+        throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
-      const result = await response.json();
-      if (!result.candidates || result.candidates.length === 0) {
-        throw new Error("API tidak memberikan respons yang valid.");
-      }
-      const textResult = result.candidates[0].content.parts[0].text;
-      view.renderAiResult(resultContainerId, "Saran dari AI", textResult);
+      view.renderAiResult(resultContainerId, "Saran dari AI", data.result);
     } catch (error) {
-      console.error("Error calling Gemini API:", error);
+      console.error("Error calling secure API:", error);
       view.renderAiResult(
         resultContainerId,
         "Oops, terjadi kesalahan!",
@@ -159,7 +133,7 @@ export const controller = {
         break;
     }
 
-    this.callGeminiAPI(contextPrompt, buttonElement, resultContainerId);
+    this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
 
   handleNavigation(pageId) {
@@ -171,8 +145,6 @@ export const controller = {
   handleCloseModal() {
     view.closeModal();
   },
-
-  // --- FUNGSI FORM SUBMIT DIPERBAIKI ---
   handleFormSubmit() {
     try {
       const name = document.getElementById("modal-name").value;
