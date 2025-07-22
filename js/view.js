@@ -61,7 +61,48 @@ export const view = {
       .join("");
   },
 
-  // ... sisa fungsi view tetap sama ...
+  // --- FUNGSI AI BARU ---
+  renderAiResult(containerId, title, content) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+
+    while (container.firstChild) {
+      container.removeChild(container.firstChild);
+    }
+
+    if (!title && !content) return;
+
+    const card = document.createElement("div");
+    card.className = "ai-result-card";
+
+    let html = "";
+    if (title) {
+      html += `<h4>${title}</h4>`;
+    }
+    if (content) {
+      const formattedContent = content.replace(/\n/g, "<br>");
+      html += `<p>${formattedContent}</p>`;
+    }
+
+    card.innerHTML = html;
+    container.appendChild(card);
+  },
+
+  // --- PERBAIKAN: Menambahkan fungsi yang hilang ---
+  setButtonLoadingState(button, isLoading) {
+    if (isLoading) {
+      button.disabled = true;
+      button.innerHTML = `<span class="loading-spinner"></span> Memproses...`;
+    } else {
+      button.disabled = false;
+      // Mengembalikan teks tombol sesuai jenisnya
+      const type = button.id.replace("-ai-btn", "");
+      let buttonText = "Tanya AI"; // Default
+      button.innerHTML = buttonText;
+    }
+  },
+
+  // --- Sisa fungsi view tetap sama ---
   setActivePage(pageId) {
     document
       .querySelectorAll(".page-section")
