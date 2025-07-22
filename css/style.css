@@ -2,6 +2,7 @@
 :root {
   --color-primary: #3b82f6;
   --color-food: #f97316;
+  --color-drink: #22d3ee; /* Warna baru untuk minuman */
   --color-transport: #0ea5e9;
   --color-homestay: #14b8a6;
   --color-souvenir: #eab308;
@@ -125,15 +126,18 @@ body {
   border-color: var(--color-food);
 }
 .service-card:nth-child(2):hover {
-  border-color: var(--color-transport);
+  border-color: var(--color-drink);
 }
 .service-card:nth-child(3):hover {
-  border-color: var(--color-homestay);
+  border-color: var(--color-transport);
 }
 .service-card:nth-child(4):hover {
-  border-color: var(--color-souvenir);
+  border-color: var(--color-homestay);
 }
 .service-card:nth-child(5):hover {
+  border-color: var(--color-souvenir);
+}
+.service-card:nth-child(6):hover {
   border-color: var(--color-tour);
 }
 .service-card h3 {
@@ -206,6 +210,9 @@ body {
 .btn-food {
   background-color: var(--color-food);
 }
+.btn-drink {
+  background-color: var(--color-drink);
+}
 .btn-transport {
   background-color: var(--color-transport);
 }
@@ -219,7 +226,7 @@ body {
   background-color: var(--color-tour);
 }
 
-/* Fitur AI (BARU) */
+/* Fitur AI */
 .ai-feature-box {
   background-color: white;
   padding: 2rem;

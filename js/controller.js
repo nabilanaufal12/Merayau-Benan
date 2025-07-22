@@ -12,13 +12,11 @@ export const controller = {
   },
 
   setupEventListeners() {
-    // Event listener untuk form submission
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
 
-    // PERBAIKAN: Menggunakan event delegation yang lebih andal untuk semua klik
     document.body.addEventListener("click", (e) => {
       const navLink = e.target.closest(".nav-links a");
       if (navLink) {
@@ -69,13 +67,10 @@ export const controller = {
     });
   },
 
-  // --- LOGIKA AI ---
   async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
-
     const functionUrl = "/.netlify/functions/gemini";
-
     try {
       const response = await fetch(functionUrl, {
         method: "POST",
@@ -103,21 +98,21 @@ export const controller = {
     const inputElement = document.getElementById(`${type}-ai-input`);
     const buttonElement = document.getElementById(`${type}-ai-btn`);
     const resultContainerId = `${type}-ai-result`;
-
     const userInput = inputElement.value;
     if (!userInput) {
       alert("Mohon tulis keinginan Anda terlebih dahulu.");
       return;
     }
-
     const itemList = model.data[type]
       .map((item) => `"${item.name}" (deskripsi: ${item.desc})`)
       .join("; ");
-
     let contextPrompt = "";
     switch (type) {
       case "food":
         contextPrompt = `Anda adalah asisten kuliner untuk layanan lokal di Pulau Benan. Daftar menu yang kami sediakan adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU menu dari daftar tersebut. Berikan jawaban singkat dan menarik, sebutkan nama menunya dengan jelas.`;
+        break;
+      case "drink":
+        contextPrompt = `Anda adalah asisten minuman di Pulau Benan. Daftar minuman kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU minuman yang paling cocok. Berikan alasan singkat.`;
         break;
       case "transport":
         contextPrompt = `Anda adalah asisten transportasi di Pulau Benan. Layanan kami adalah: ${itemList}. Berdasarkan kebutuhan pengguna: "${userInput}", rekomendasikan SATU layanan yang paling sesuai. Jelaskan kenapa layanan itu cocok.`;
@@ -132,7 +127,6 @@ export const controller = {
         contextPrompt = `Anda adalah asisten wisata di Pulau Benan. Paket wisata kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", buatkan draf rencana perjalanan singkat yang menarik. Anda boleh merekomendasikan satu atau lebih paket wisata dari daftar yang ada sebagai bagian dari rencana tersebut.`;
         break;
     }
-
     this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
 
@@ -151,12 +145,10 @@ export const controller = {
       const phone = document.getElementById("modal-phone").value;
       const itemName = document.getElementById("modal-item-name").value;
       const itemType = document.getElementById("modal-item-type").value;
-
       if (!name || !phone) {
         alert("Nama dan Nomor HP wajib diisi.");
         return;
       }
-
       let details = "";
       switch (itemType) {
         case "food":
@@ -164,6 +156,13 @@ export const controller = {
             document.getElementById("modal-food-details").value
           }\n*Alamat Antar:* ${
             document.getElementById("modal-food-address").value
+          }`;
+          break;
+        case "drink":
+          details = `*Pesanan:* ${itemName}\n*Jumlah/Catatan:* ${
+            document.getElementById("modal-drink-details").value
+          }\n*Alamat Antar:* ${
+            document.getElementById("modal-drink-address").value
           }`;
           break;
         case "transport":
@@ -197,7 +196,6 @@ export const controller = {
           } orang`;
           break;
       }
-
       const message =
         `*-- PESANAN BARU --*\n\nHalo, saya ingin memesan layanan berikut:\n\n*Nama Pemesan:* ${name}\n*No. HP:* ${phone}\n\n*Detail Layanan:*\n${details}\n\nMohon informasinya. Terima kasih!`
           .trim()
@@ -205,7 +203,6 @@ export const controller = {
       const whatsappUrl = `https://wa.me/${
         model.whatsAppNumber
       }?text=${encodeURIComponent(message)}`;
-
       window.open(whatsappUrl, "_blank");
       view.closeModal();
     } catch (error) {

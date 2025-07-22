@@ -20,6 +20,7 @@
         <div class="nav-links">
           <a href="#" id="nav-home" class="active" data-page="home">Beranda</a>
           <a href="#" id="nav-food" data-page="food">Makanan</a>
+          <a href="#" id="nav-drink" data-page="drink">Minuman</a>
           <a href="#" id="nav-transport" data-page="transport">Transportasi</a>
           <a href="#" id="nav-homestay" data-page="homestay">Penginapan</a>
           <a href="#" id="nav-souvenir" data-page="souvenir">Oleh-Oleh</a>
@@ -43,6 +44,10 @@
             <h3>Kuliner Khas</h3>
             <p>Cicipi kelezatan otentik Pulau Benan.</p>
           </div>
+          <div class="service-card" data-page="drink">
+            <h3>Minuman Segar</h3>
+            <p>Lepaskan dahaga dengan pilihan minuman kami.</p>
+          </div>
           <div class="service-card" data-page="transport">
             <h3>Transportasi Lokal</h3>
             <p>Jelajahi setiap sudut pulau dengan mudah.</p>
@@ -57,7 +62,7 @@
           </div>
           <div class="service-card" data-page="tour">
             <h3>Paket Wisata</h3>
-            <p>Temukan pesona Pulau Bintan dan sekitarnya.</p>
+            <p>Temukan pesona Pulau Benan dan sekitarnya.</p>
           </div>
         </div>
       </section>
@@ -83,93 +88,42 @@
         <div class="item-grid" id="food-grid"></div>
       </section>
 
+      <!-- Halaman Minuman -->
+      <section id="drink-page" class="page-section">
+        <div class="page-header"><h2>Pilihan Minuman</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Minuman AI</h3>
+          <p>
+            Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
+            "Minuman panas ada?".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="drink-ai-input"
+              placeholder="Tulis jenis minuman yang Anda mau..."
+            /><button id="drink-ai-btn" class="btn btn-drink">Tanya AI</button>
+          </div>
+          <div id="drink-ai-result" class="ai-result-container"></div>
+        </div>
+        <div class="item-grid" id="drink-grid"></div>
+      </section>
+
       <!-- Halaman Transportasi -->
       <section id="transport-page" class="page-section">
         <div class="page-header"><h2>Transportasi Lokal</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Transportasi AI</h3>
-          <p>
-            Butuh saran transportasi? Contoh: "Mau ke Pantai Kuansing dari pusat
-            pulau" atau "Perjalanan rombongan 5 orang".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="transport-ai-input"
-              placeholder="Tulis kebutuhan perjalanan Anda..."
-            /><button id="transport-ai-btn" class="btn btn-transport">
-              Tanya AI
-            </button>
-          </div>
-          <div id="transport-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="transport-grid"></div>
       </section>
-
-      <!-- Halaman Penginapan -->
       <section id="homestay-page" class="page-section">
         <div class="page-header"><h2>Pilihan Penginapan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Akomodasi AI</h3>
-          <p>
-            Cari penginapan yang pas? Contoh: "Cocok untuk keluarga" atau "Dekat
-            pusat pulau dan murah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="homestay-ai-input"
-              placeholder="Tulis tipe penginapan yang Anda cari..."
-            /><button id="homestay-ai-btn" class="btn btn-homestay">
-              Tanya AI
-            </button>
-          </div>
-          <div id="homestay-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="homestay-grid"></div>
       </section>
-
-      <!-- Halaman Oleh-Oleh -->
       <section id="souvenir-page" class="page-section">
         <div class="page-header"><h2>Oleh-Oleh Khas</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Oleh-Oleh AI</h3>
-          <p>
-            Bingung cari buah tangan? Contoh: "Oleh-oleh yang awet" atau "Yang
-            paling khas dari sini apa ya?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="souvenir-ai-input"
-              placeholder="Tulis jenis oleh-oleh yang Anda mau..."
-            /><button id="souvenir-ai-btn" class="btn btn-souvenir">
-              Tanya AI
-            </button>
-          </div>
-          <div id="souvenir-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="souvenir-grid"></div>
       </section>
-
-      <!-- Halaman Paket Wisata -->
       <section id="tour-page" class="page-section">
         <div class="page-header"><h2>Paket Wisata Populer</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Wisata AI</h3>
-          <p>
-            Rencanakan perjalanan Anda! Contoh: "Buatkan rencana 2 hari untuk
-            pecinta pantai" atau "Saya punya waktu setengah hari".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="tour-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="tour-ai-btn" class="btn btn-tour">Tanya AI</button>
-          </div>
-          <div id="tour-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="tour-grid"></div>
       </section>
     </main>
@@ -203,7 +157,6 @@
             />
           </div>
 
-          <!-- PERBAIKAN: Atribut 'required' dihapus dari sini dan akan dikelola oleh JavaScript -->
           <div id="food-fields" class="specific-fields">
             <div class="form-group">
               <label for="modal-food-address">Alamat Pengantaran</label
@@ -219,6 +172,24 @@
                 type="text"
                 id="modal-food-details"
                 placeholder="Contoh: 2 porsi, tidak pedas"
+              />
+            </div>
+          </div>
+          <div id="drink-fields" class="specific-fields">
+            <div class="form-group">
+              <label for="modal-drink-address">Alamat Pengantaran</label
+              ><textarea
+                id="modal-drink-address"
+                rows="2"
+                placeholder="Alamat lengkap Anda"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="modal-drink-details">Detail Pesanan</label
+              ><input
+                type="text"
+                id="modal-drink-details"
+                placeholder="Contoh: 2 gelas, es"
               />
             </div>
           </div>
@@ -286,7 +257,7 @@
               ><input
                 type="text"
                 id="modal-souvenir-details"
-                placeholder="Contoh: 2 pulauk"
+                placeholder="Contoh: 2 kotak"
               />
             </div>
           </div>
@@ -301,8 +272,8 @@
     <!-- Footer -->
     <footer>
       <p>
-        &copy; <span id="year"></span> Merayau Benan. Dibuat oleh KIR SMANSA
-        KATBID.
+        &copy; <span id="year"></span> Merayau Benan. Dibuat dengan HTML, CSS,
+        JS & Gemini.
       </p>
     </footer>
 
