@@ -12,11 +12,11 @@ export const controller = {
   },
 
   setupEventListeners() {
+    // ... (event listener lainnya tetap sama) ...
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
-
     document.body.addEventListener("click", (e) => {
       const navLink = e.target.closest(".nav-links a");
       if (navLink) {
@@ -24,20 +24,17 @@ export const controller = {
         this.handleNavigation(navLink.dataset.page);
         return;
       }
-
       const navLogo = e.target.closest(".nav-logo");
       if (navLogo) {
         e.preventDefault();
         this.handleNavigation("home");
         return;
       }
-
       const serviceCard = e.target.closest(".service-card");
       if (serviceCard) {
         this.handleNavigation(serviceCard.dataset.page);
         return;
       }
-
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
         const type = itemButton.dataset.type;
@@ -45,28 +42,55 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
-
       const aiButton = e.target.closest(".ai-input-group button");
       if (aiButton) {
         const type = aiButton.id.replace("-ai-btn", "");
         this.handleRecommendation(type);
         return;
       }
-
       const closeModalButton = e.target.closest(".close-button");
       if (closeModalButton) {
         this.handleCloseModal();
         return;
       }
-
       const modalBackground = e.target.closest("#order-modal");
       if (modalBackground === e.target) {
         this.handleCloseModal();
         return;
       }
     });
+
+    const backToTopButton = document.getElementById("back-to-top-btn");
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add("show");
+      } else {
+        backToTopButton.classList.remove("show");
+      }
+    });
+    backToTopButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // --- LOGIKA BARU UNTUK HAMBURGER MENU ---
+    const hamburgerButton = document.getElementById("hamburger-btn");
+    const navLinks = document.querySelector(".nav-links");
+
+    hamburgerButton.addEventListener("click", () => {
+      navLinks.classList.toggle("active");
+    });
+
+    // Menutup menu saat link di-klik (penting untuk SPA)
+    navLinks.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") {
+        navLinks.classList.remove("active");
+      }
+    });
+    // --- AKHIR LOGIKA BARU ---
   },
 
+  // ... (sisa fungsi controller tetap sama) ...
   async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
@@ -93,7 +117,6 @@ export const controller = {
       view.setButtonLoadingState(button, false);
     }
   },
-
   handleRecommendation(type) {
     const inputElement = document.getElementById(`${type}-ai-input`);
     const buttonElement = document.getElementById(`${type}-ai-btn`);
@@ -103,7 +126,13 @@ export const controller = {
       alert("Mohon tulis keinginan Anda terlebih dahulu.");
       return;
     }
-    const itemList = model.data[type]
+    let allItems;
+    if (Array.isArray(model.data[type])) {
+      allItems = model.data[type];
+    } else {
+      allItems = Object.values(model.data[type]).flat();
+    }
+    const itemList = allItems
       .map((item) => `"${item.name}" (deskripsi: ${item.desc})`)
       .join("; ");
     let contextPrompt = "";
@@ -129,7 +158,6 @@ export const controller = {
     }
     this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
-
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Merayau Benan - Pulau Benan</title>
+    <title>Jasa Lokal AI - Pulau Benan</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -16,7 +16,7 @@
     <!-- Navigasi -->
     <nav class="navbar">
       <div class="container nav-content">
-        <a href="#" class="nav-logo">Merayau Benan</a>
+        <a href="#" class="nav-logo">Jasa Lokal AI</a>
         <div class="nav-links">
           <a href="#" id="nav-home" class="active" data-page="home">Beranda</a>
           <a href="#" id="nav-food" data-page="food">Makanan</a>
@@ -25,7 +25,15 @@
           <a href="#" id="nav-homestay" data-page="homestay">Penginapan</a>
           <a href="#" id="nav-souvenir" data-page="souvenir">Oleh-Oleh</a>
           <a href="#" id="nav-tour" data-page="tour">Paket Wisata</a>
+          <a href="#" id="nav-gallery" data-page="gallery">Galeri</a>
+          <a href="#" id="nav-about" data-page="about">Tentang Kami</a>
         </div>
+        <!-- Tombol Hamburger untuk Mobile -->
+        <button id="hamburger-btn" class="hamburger-btn">
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+          <span class="hamburger-bar"></span>
+        </button>
       </div>
     </nav>
 
@@ -64,52 +72,31 @@
             <h3>Paket Wisata</h3>
             <p>Temukan pesona Pulau Benan dan sekitarnya.</p>
           </div>
+          <div class="service-card" data-page="gallery">
+            <h3>Galeri Foto</h3>
+            <p>Lihat keindahan Pulau Benan dalam gambar.</p>
+          </div>
+          <div class="service-card" data-page="about">
+            <h3>Tentang Kami</h3>
+            <p>Kenali lebih dekat layanan Merayau Benan.</p>
+          </div>
         </div>
       </section>
 
       <!-- Halaman Makanan -->
       <section id="food-page" class="page-section">
         <div class="page-header"><h2>Kuliner Khas Pulau Benan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Kuliner AI</h3>
-          <p>
-            Bingung mau makan apa? Tanya saja! Contoh: "Saya mau sarapan" atau
-            "Lagi pengen yang berkuah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="food-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="food-ai-btn" class="btn btn-food">Tanya AI</button>
-          </div>
-          <div id="food-ai-result" class="ai-result-container"></div>
-        </div>
-        <div class="item-grid" id="food-grid"></div>
+        <div id="food-grid"></div>
       </section>
 
       <!-- Halaman Minuman -->
       <section id="drink-page" class="page-section">
         <div class="page-header"><h2>Pilihan Minuman</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Minuman AI</h3>
-          <p>
-            Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
-            "Minuman panas ada?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="drink-ai-input"
-              placeholder="Tulis jenis minuman yang Anda mau..."
-            /><button id="drink-ai-btn" class="btn btn-drink">Tanya AI</button>
-          </div>
-          <div id="drink-ai-result" class="ai-result-container"></div>
-        </div>
+        <!-- PERBAIKAN: Menambahkan class="item-grid" -->
         <div class="item-grid" id="drink-grid"></div>
       </section>
 
-      <!-- Halaman Transportasi -->
+      <!-- Halaman-halaman lainnya -->
       <section id="transport-page" class="page-section">
         <div class="page-header"><h2>Transportasi Lokal</h2></div>
         <div class="item-grid" id="transport-grid"></div>
@@ -125,6 +112,46 @@
       <section id="tour-page" class="page-section">
         <div class="page-header"><h2>Paket Wisata Populer</h2></div>
         <div class="item-grid" id="tour-grid"></div>
+      </section>
+      <section id="gallery-page" class="page-section">
+        <div class="page-header"><h2>Galeri Keindahan Pulau Benan</h2></div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+      </section>
+      <section id="about-page" class="page-section">
+        <div class="page-header"><h2>Tentang Merayau Benan</h2></div>
+        <div class="about-content">
+          <img
+            src="https://placehold.co/600x400/a855f7/white?text=Merayau+Benan"
+            alt="Tentang Kami"
+          />
+          <h3>Misi Kami</h3>
+          <p>
+            Merayau Benan hadir untuk memudahkan wisatawan dan pengunjung dalam
+            menikmati segala pesona yang ditawarkan oleh Pulau Benan. Kami
+            percaya bahwa setiap perjalanan haruslah mudah, menyenangkan, dan
+            tak terlupakan. Melalui platform ini, kami menghubungkan Anda
+            langsung dengan penyedia layanan lokal terbaik, mulai dari kuliner
+            otentik, penginapan yang nyaman, hingga petualangan wisata yang
+            seru.
+          </p>
+          <h3>Layanan Terpadu</h3>
+          <p>
+            Kami menyediakan platform satu pintu untuk semua kebutuhan Anda di
+            Pulau Benan. Tidak perlu lagi bingung mencari kontak atau informasi.
+            Cukup jelajahi menu kami, pilih layanan yang Anda butuhkan, dan
+            pesan langsung melalui WhatsApp. Didukung oleh Asisten AI, kami juga
+            siap membantu Anda menemukan rekomendasi terbaik yang sesuai dengan
+            keinginan Anda.
+          </p>
+          <h3>Didukung oleh Komunitas Lokal</h3>
+          <p>
+            Setiap pesanan yang Anda buat melalui website ini turut mendukung
+            perekonomian masyarakat lokal Pulau Benan. Kami bekerja sama
+            langsung dengan pemilik homestay, penyedia makanan, nelayan, dan
+            pemandu wisata untuk memastikan Anda mendapatkan pengalaman yang
+            otentik sekaligus memberikan dampak positif bagi komunitas.
+          </p>
+        </div>
       </section>
     </main>
 
@@ -156,7 +183,6 @@
               placeholder="081234567890"
             />
           </div>
-
           <div id="food-fields" class="specific-fields">
             <div class="form-group">
               <label for="modal-food-address">Alamat Pengantaran</label
@@ -261,7 +287,6 @@
               />
             </div>
           </div>
-
           <button type="submit" id="modal-submit-btn" class="btn">
             Pesan via WhatsApp
           </button>
@@ -272,11 +297,11 @@
     <!-- Footer -->
     <footer>
       <p>
-        &copy; <span id="year"></span> Merayau Benan. Dibuat dengan HTML, CSS,
+        &copy; <span id="year"></span> Jasa Lokal AI. Dibuat dengan HTML, CSS,
         JS & Gemini.
       </p>
     </footer>
-
+    <a href="#" id="back-to-top-btn" title="Kembali ke atas">&#8679;</a>
     <script src="js/main.js" type="module"></script>
   </body>
 </html>
