@@ -100,19 +100,18 @@ body {
 
 /* Media Query untuk Tampilan Mobile */
 @media (max-width: 1100px) {
-  /* PERBAIKAN: Mengatur ulang urutan elemen di navigasi */
   .nav-logo {
-    order: 2; /* Logo pindah ke tengah */
-    flex-grow: 1; /* Memastikan logo mengisi ruang */
-    text-align: center; /* Teks logo menjadi di tengah */
-    margin: 0 1rem; /* Memberi sedikit jarak */
+    order: 2;
+    flex-grow: 1;
+    text-align: center;
+    margin: 0 1rem;
   }
   .hamburger-btn {
-    order: 1; /* Tombol hamburger pindah ke kiri */
+    order: 1;
     display: block;
   }
   .nav-links {
-    order: 3; /* Pastikan menu tetap di urutan yang benar saat tersembunyi */
+    order: 3;
     position: absolute;
     top: 100%;
     left: 0;
@@ -308,6 +307,83 @@ body {
 }
 .btn-tour {
   background-color: var(--color-tour);
+}
+
+/* Fitur AI */
+.ai-feature-box {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow);
+  margin-bottom: 2.5rem;
+}
+.ai-feature-box h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.ai-feature-box p {
+  color: var(--color-light-text);
+  margin-bottom: 1rem;
+}
+/* PERBAIKAN TATA LETAK DIMULAI DI SINI */
+.ai-input-group {
+  display: flex;
+  gap: 1rem;
+}
+.ai-input-group input {
+  flex-grow: 1;
+  padding: 0.8rem 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+}
+.ai-input-group button {
+  width: auto;
+  white-space: nowrap;
+}
+/* AKHIR PERBAIKAN */
+.ai-result-container {
+  margin-top: 1.5rem;
+}
+.ai-result-card {
+  background-color: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.ai-result-card h4 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.ai-result-card pre {
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: monospace;
+  font-size: 0.9rem;
+}
+.loading-spinner {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
 }
 
 /* Halaman Galeri */
