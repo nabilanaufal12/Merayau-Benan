@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Merayau Benan - Pulau Benan</title>
+
+    <!-- PERBAIKAN: Memastikan path ke file CSS sudah benar -->
     <link rel="stylesheet" href="css/style.css" />
+
+    <link rel="icon" href="assets/logo.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -83,139 +87,31 @@
         </div>
       </section>
 
-      <!-- Halaman Makanan -->
+      <!-- Halaman-halaman lainnya -->
       <section id="food-page" class="page-section">
         <div class="page-header"><h2>Kuliner Khas Pulau Benan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Kuliner AI</h3>
-          <p>
-            Bingung mau makan apa? Tanya saja! Contoh: "Saya mau sarapan" atau
-            "Lagi pengen yang berkuah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="food-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="food-ai-btn" class="btn btn-food">Tanya AI</button>
-          </div>
-          <div id="food-ai-result" class="ai-result-container"></div>
-        </div>
         <div id="food-grid"></div>
       </section>
-
-      <!-- Halaman Minuman -->
       <section id="drink-page" class="page-section">
         <div class="page-header"><h2>Pilihan Minuman</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Minuman AI</h3>
-          <p>
-            Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
-            "Minuman panas ada?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="drink-ai-input"
-              placeholder="Tulis jenis minuman yang Anda mau..."
-            /><button id="drink-ai-btn" class="btn btn-drink">Tanya AI</button>
-          </div>
-          <div id="drink-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="drink-grid"></div>
       </section>
-
-      <!-- Halaman Transportasi -->
       <section id="transport-page" class="page-section">
         <div class="page-header"><h2>Transportasi Lokal</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Transportasi AI</h3>
-          <p>
-            Butuh saran transportasi? Contoh: "Mau ke Pantai Trikora dari pusat
-            kota" atau "Perjalanan rombongan 5 orang".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="transport-ai-input"
-              placeholder="Tulis kebutuhan perjalanan Anda..."
-            /><button id="transport-ai-btn" class="btn btn-transport">
-              Tanya AI
-            </button>
-          </div>
-          <div id="transport-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="transport-grid"></div>
       </section>
-
-      <!-- Halaman Penginapan -->
       <section id="homestay-page" class="page-section">
         <div class="page-header"><h2>Pilihan Penginapan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Akomodasi AI</h3>
-          <p>
-            Cari penginapan yang pas? Contoh: "Cocok untuk keluarga" atau "Dekat
-            pusat kota dan murah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="homestay-ai-input"
-              placeholder="Tulis tipe penginapan yang Anda cari..."
-            /><button id="homestay-ai-btn" class="btn btn-homestay">
-              Tanya AI
-            </button>
-          </div>
-          <div id="homestay-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="homestay-grid"></div>
       </section>
-
-      <!-- Halaman Oleh-Oleh -->
       <section id="souvenir-page" class="page-section">
         <div class="page-header"><h2>Oleh-Oleh Khas</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Oleh-Oleh AI</h3>
-          <p>
-            Bingung cari buah tangan? Contoh: "Oleh-oleh yang awet" atau "Yang
-            paling khas dari sini apa ya?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="souvenir-ai-input"
-              placeholder="Tulis jenis oleh-oleh yang Anda mau..."
-            /><button id="souvenir-ai-btn" class="btn btn-souvenir">
-              Tanya AI
-            </button>
-          </div>
-          <div id="souvenir-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="souvenir-grid"></div>
       </section>
-
-      <!-- Halaman Paket Wisata -->
       <section id="tour-page" class="page-section">
         <div class="page-header"><h2>Paket Wisata Populer</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Wisata AI</h3>
-          <p>
-            Rencanakan perjalanan Anda! Contoh: "Buatkan rencana 2 hari untuk
-            pecinta pantai" atau "Saya punya waktu setengah hari".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="tour-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="tour-ai-btn" class="btn btn-tour">Tanya AI</button>
-          </div>
-          <div id="tour-ai-result" class="ai-result-container"></div>
-        </div>
         <div class="item-grid" id="tour-grid"></div>
       </section>
-
-      <!-- Halaman-halaman lainnya -->
       <section id="gallery-page" class="page-section">
         <div class="page-header"><h2>Galeri Keindahan Pulau Benan</h2></div>
         <div class="gallery-grid" id="gallery-grid"></div>
@@ -401,7 +297,7 @@
     <footer>
       <p>
         &copy; <span id="year"></span> Merayau Benan. Dibuat oleh KIR SMANSA
-        KATBIT.
+        KATBID.
       </p>
     </footer>
     <a href="#" id="back-to-top-btn" title="Kembali ke atas">&#8679;</a>

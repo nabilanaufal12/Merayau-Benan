@@ -44,37 +44,69 @@ export const view = {
 
   generateCardHtml(type, items) {
     return items
-      .map(
-        (item) => `
-            <div class="item-card">
-                <img src="${item.img}" alt="${item.name}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
-                <div class="item-card-content">
-                    <h3>${item.name}</h3>
-                    <p>${item.desc}</p>
-                    <button class="btn btn-${type}" data-type="${type}" data-name="${item.name}">
-                        Pesan Sekarang
-                    </button>
+      .map((item) => {
+        // Logika baru untuk membuat struktur HTML untuk slider
+        const images = Array.isArray(item.img) ? item.img : [item.img];
+        const hasMultipleImages = images.length > 1;
+
+        const imageSlides = images
+          .map(
+            (src) => `
+                <div class="slider-slide">
+                    <img src="${src}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
                 </div>
-            </div>
-        `
-      )
+            `
+          )
+          .join("");
+
+        const sliderControls = hasMultipleImages
+          ? `
+                <button class="slider-btn prev" data-direction="-1">&#10094;</button>
+                <button class="slider-btn next" data-direction="1">&#10095;</button>
+                <div class="slider-dots">
+                    ${images
+                      .map(
+                        (_, i) =>
+                          `<span class="dot ${
+                            i === 0 ? "active" : ""
+                          }" data-slide="${i}"></span>`
+                      )
+                      .join("")}
+                </div>
+            `
+          : "";
+
+        return `
+                <div class="item-card">
+                    <div class="slider-container" data-id="${item.id}" data-current-index="0">
+                        <div class="slider-wrapper">
+                            ${imageSlides}
+                        </div>
+                        ${sliderControls}
+                    </div>
+                    <div class="item-card-content">
+                        <h3>${item.name}</h3>
+                        <p>${item.desc}</p>
+                        <button class="btn btn-${type}" data-type="${type}" data-name="${item.name}">
+                            Pesan Sekarang
+                        </button>
+                    </div>
+                </div>
+            `;
+      })
       .join("");
   },
 
-  // --- FUNGSI AI BARU ---
+  // ... sisa fungsi view tetap sama ...
   renderAiResult(containerId, title, content) {
     const container = document.getElementById(containerId);
     if (!container) return;
-
     while (container.firstChild) {
       container.removeChild(container.firstChild);
     }
-
     if (!title && !content) return;
-
     const card = document.createElement("div");
     card.className = "ai-result-card";
-
     let html = "";
     if (title) {
       html += `<h4>${title}</h4>`;
@@ -83,26 +115,18 @@ export const view = {
       const formattedContent = content.replace(/\n/g, "<br>");
       html += `<p>${formattedContent}</p>`;
     }
-
     card.innerHTML = html;
     container.appendChild(card);
   },
-
-  // --- PERBAIKAN: Menambahkan fungsi yang hilang ---
   setButtonLoadingState(button, isLoading) {
     if (isLoading) {
       button.disabled = true;
       button.innerHTML = `<span class="loading-spinner"></span> Memproses...`;
     } else {
       button.disabled = false;
-      // Mengembalikan teks tombol sesuai jenisnya
-      const type = button.id.replace("-ai-btn", "");
-      let buttonText = "Tanya AI"; // Default
-      button.innerHTML = buttonText;
+      button.innerHTML = "Tanya AI";
     }
   },
-
-  // --- Sisa fungsi view tetap sama ---
   setActivePage(pageId) {
     document
       .querySelectorAll(".page-section")

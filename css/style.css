@@ -250,11 +250,76 @@ body {
   transform: translateY(-5px);
   box-shadow: var(--shadow-lg);
 }
-.item-card img {
+
+/* GAYA SLIDER BARU */
+.slider-container {
+  position: relative;
   width: 100%;
   height: 200px;
+  overflow: hidden;
+}
+.slider-wrapper {
+  display: flex;
+  height: 100%;
+  transition: transform 0.5s ease-in-out;
+}
+.slider-slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+}
+.slider-slide img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(0, 0, 0, 0.4);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  line-height: 1;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.slider-container:hover .slider-btn {
+  opacity: 1;
+}
+.slider-btn.prev {
+  left: 10px;
+}
+.slider-btn.next {
+  right: 10px;
+}
+.slider-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.dot.active {
+  background-color: white;
+}
+/* AKHIR GAYA SLIDER */
+
 .item-card-content {
   padding: 1.5rem;
   flex-grow: 1;
@@ -326,7 +391,6 @@ body {
   color: var(--color-light-text);
   margin-bottom: 1rem;
 }
-/* PERBAIKAN TATA LETAK DIMULAI DI SINI */
 .ai-input-group {
   display: flex;
   gap: 1rem;
@@ -342,7 +406,6 @@ body {
   width: auto;
   white-space: nowrap;
 }
-/* AKHIR PERBAIKAN */
 .ai-result-container {
   margin-top: 1.5rem;
 }
@@ -464,6 +527,7 @@ body {
   margin-bottom: 1rem;
   line-height: 1.8;
   color: var(--color-light-text);
+  text-align: justify;
 }
 
 /* Modal/Popup */

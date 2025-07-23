@@ -3,39 +3,95 @@ import { model } from "./model.js";
 import { view } from "./view.js";
 
 export const controller = {
+  sliderIntervals: {}, // Menyimpan interval untuk setiap slider
+
   init() {
     for (const type in model.data) {
       view.renderGrid(type, model.data[type]);
     }
     view.updateYear();
     this.setupEventListeners();
+    this.initializeAllSliders(); // Inisialisasi semua slider
   },
 
+  // --- LOGIKA SLIDER BARU ---
+  initializeAllSliders() {
+    document.querySelectorAll(".slider-container").forEach((slider) => {
+      this.startAutoSlide(slider);
+
+      slider.addEventListener("mouseenter", () => this.stopAutoSlide(slider));
+      slider.addEventListener("mouseleave", () => this.startAutoSlide(slider));
+    });
+  },
+
+  moveSlide(slider, direction) {
+    const wrapper = slider.querySelector(".slider-wrapper");
+    const slides = slider.querySelectorAll(".slider-slide");
+    const totalSlides = slides.length;
+    if (totalSlides <= 1) return;
+
+    let currentIndex = parseInt(slider.dataset.currentIndex, 10);
+    currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
+
+    wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
+    slider.dataset.currentIndex = currentIndex;
+
+    this.updateDots(slider, currentIndex);
+  },
+
+  goToSlide(slider, index) {
+    const wrapper = slider.querySelector(".slider-wrapper");
+    wrapper.style.transform = `translateX(-${index * 100}%)`;
+    slider.dataset.currentIndex = index;
+    this.updateDots(slider, index);
+  },
+
+  updateDots(slider, index) {
+    const dots = slider.querySelectorAll(".dot");
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === index);
+    });
+  },
+
+  startAutoSlide(slider) {
+    const sliderId = slider.dataset.id;
+    if (this.sliderIntervals[sliderId]) return; // Mencegah duplikasi interval
+
+    const totalSlides = slider.querySelectorAll(".slider-slide").length;
+    if (totalSlides <= 1) return;
+
+    this.sliderIntervals[sliderId] = setInterval(() => {
+      this.moveSlide(slider, 1); // Pindah ke slide berikutnya
+    }, 4000); // Ganti gambar setiap 4 detik
+  },
+
+  stopAutoSlide(slider) {
+    const sliderId = slider.dataset.id;
+    clearInterval(this.sliderIntervals[sliderId]);
+    delete this.sliderIntervals[sliderId];
+  },
+  // --- AKHIR LOGIKA SLIDER ---
+
   setupEventListeners() {
-    // Menggunakan satu event listener utama yang andal untuk semua klik
     document.body.addEventListener("click", (e) => {
+      // ... (event listener navigasi, service card, dll. tetap sama) ...
       const navLink = e.target.closest(".nav-links a");
       if (navLink) {
         e.preventDefault();
         this.handleNavigation(navLink.dataset.page);
-        // Menutup menu mobile setelah link diklik
-        document.querySelector(".nav-links").classList.remove("active");
         return;
       }
-
       const navLogo = e.target.closest(".nav-logo");
       if (navLogo) {
         e.preventDefault();
         this.handleNavigation("home");
         return;
       }
-
       const serviceCard = e.target.closest(".service-card");
       if (serviceCard) {
         this.handleNavigation(serviceCard.dataset.page);
         return;
       }
-
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
         const type = itemButton.dataset.type;
@@ -43,34 +99,47 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
-
       const aiButton = e.target.closest(".ai-input-group button");
       if (aiButton) {
         const type = aiButton.id.replace("-ai-btn", "");
         this.handleRecommendation(type);
         return;
       }
-
       const closeModalButton = e.target.closest(".close-button");
       if (closeModalButton) {
         this.handleCloseModal();
         return;
       }
-
       const modalBackground = e.target.closest("#order-modal");
       if (modalBackground === e.target) {
         this.handleCloseModal();
         return;
       }
+
+      // Event listener untuk tombol slider
+      const sliderBtn = e.target.closest(".slider-btn");
+      if (sliderBtn) {
+        const slider = sliderBtn.closest(".slider-container");
+        const direction = parseInt(sliderBtn.dataset.direction, 10);
+        this.moveSlide(slider, direction);
+        return;
+      }
+
+      // Event listener untuk titik navigasi slider
+      const dot = e.target.closest(".dot");
+      if (dot) {
+        const slider = dot.closest(".slider-container");
+        const slideIndex = parseInt(dot.dataset.slide, 10);
+        this.goToSlide(slider, slideIndex);
+        return;
+      }
     });
 
-    // Event listener untuk form submission
+    // ... (sisa event listener tetap sama) ...
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
-
-    // Event listener untuk tombol Back to Top
     const backToTopButton = document.getElementById("back-to-top-btn");
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) {
@@ -83,36 +152,33 @@ export const controller = {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
-
-    // Event listener untuk tombol Hamburger
     const hamburgerButton = document.getElementById("hamburger-btn");
     const navLinks = document.querySelector(".nav-links");
     hamburgerButton.addEventListener("click", () => {
       navLinks.classList.toggle("active");
     });
+    navLinks.addEventListener("click", (e) => {
+      if (e.target.tagName === "A") {
+        navLinks.classList.remove("active");
+      }
+    });
   },
 
-  // --- LOGIKA AI MEMANGGIL SERVERLESS FUNCTION ---
+  // ... (sisa fungsi controller lainnya tetap sama) ...
   async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
-
-    // Alamat "pintu belakang rahasia" kita di Netlify
     const functionUrl = "/.netlify/functions/gemini";
-
     try {
       const response = await fetch(functionUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ prompt: prompt }), // Kirim prompt ke fungsi kita
+        body: JSON.stringify({ prompt: prompt }),
       });
-
       const data = await response.json();
-
       if (!response.ok) {
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
       }
-
       view.renderAiResult(resultContainerId, "Saran dari AI", data.result);
     } catch (error) {
       console.error("Error calling secure API:", error);
@@ -125,7 +191,6 @@ export const controller = {
       view.setButtonLoadingState(button, false);
     }
   },
-
   handleRecommendation(type) {
     const inputElement = document.getElementById(`${type}-ai-input`);
     const buttonElement = document.getElementById(`${type}-ai-btn`);
@@ -135,7 +200,6 @@ export const controller = {
       alert("Mohon tulis keinginan Anda terlebih dahulu.");
       return;
     }
-
     let allItems;
     if (Array.isArray(model.data[type])) {
       allItems = model.data[type];
@@ -145,7 +209,6 @@ export const controller = {
     const itemList = allItems
       .map((item) => `"${item.name}" (deskripsi: ${item.desc})`)
       .join("; ");
-
     let contextPrompt = "";
     switch (type) {
       case "food":
@@ -169,7 +232,6 @@ export const controller = {
     }
     this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
-
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },
