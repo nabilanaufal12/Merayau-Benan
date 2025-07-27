@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Merayau Benan - Pulau Benan</title>
 
-    <!-- PERBAIKAN: Memastikan path ke file CSS sudah benar -->
+    <link rel="icon" href="assets/logo.png" type="image/png" />
     <link rel="stylesheet" href="css/style.css" />
 
-    <link rel="icon" href="assets/logo.png" type="image/png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,7 +31,6 @@
           <a href="#" id="nav-gallery" data-page="gallery">Galeri</a>
           <a href="#" id="nav-about" data-page="about">Tentang Kami</a>
         </div>
-        <!-- Tombol Hamburger untuk Mobile -->
         <button id="hamburger-btn" class="hamburger-btn">
           <span class="hamburger-bar"></span>
           <span class="hamburger-bar"></span>
@@ -45,77 +43,169 @@
     <main class="container">
       <!-- Halaman Beranda -->
       <section id="home-page" class="page-section active">
-        <div class="home-header">
-          <h1>Selamat Datang di Pulau Benan!</h1>
-          <p>
-            Semua kebutuhan Anda di ujung jari, didukung oleh kecerdasan buatan.
+        <div class="hero-section">
+          <h1 class="hero-title">Jelajahi Pesona Pulau Benan</h1>
+          <p class="hero-subtitle">
+            Punya pertanyaan tentang Pulau Benan? Tanyakan pada Asisten AI kami!
           </p>
-        </div>
-        <div class="service-grid">
-          <div class="service-card" data-page="food">
-            <h3>Kuliner Khas</h3>
-            <p>Cicipi kelezatan otentik Pulau Benan.</p>
-          </div>
-          <div class="service-card" data-page="drink">
-            <h3>Minuman Segar</h3>
-            <p>Lepaskan dahaga dengan pilihan minuman kami.</p>
-          </div>
-          <div class="service-card" data-page="transport">
-            <h3>Transportasi Lokal</h3>
-            <p>Jelajahi setiap sudut pulau dengan mudah.</p>
-          </div>
-          <div class="service-card" data-page="homestay">
-            <h3>Sewa Penginapan</h3>
-            <p>Temukan akomodasi nyaman untuk liburan Anda.</p>
-          </div>
-          <div class="service-card" data-page="souvenir">
-            <h3>Oleh-Oleh Unik</h3>
-            <p>Bawa pulang kenangan tak terlupakan.</p>
-          </div>
-          <div class="service-card" data-page="tour">
-            <h3>Paket Wisata</h3>
-            <p>Temukan pesona Pulau Benan dan sekitarnya.</p>
-          </div>
-          <div class="service-card" data-page="gallery">
-            <h3>Galeri Foto</h3>
-            <p>Lihat keindahan Pulau Benan dalam gambar.</p>
-          </div>
-          <div class="service-card" data-page="about">
-            <h3>Tentang Kami</h3>
-            <p>Kenali lebih dekat layanan Merayau Benan.</p>
+          <div class="ai-feature-box hero-ai-box">
+            <h3>Asisten Wisata Pulau Benan</h3>
+            <p>
+              Tanya apa saja, mulai dari "ada pantai apa saja?" hingga
+              "bagaimana cara terbaik untuk berkeliling pulau?".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="home-ai-input"
+                placeholder="Ketik pertanyaan Anda di sini..."
+              />
+              <button id="home-ai-btn" class="btn btn-primary">Tanya AI</button>
+            </div>
+            <div id="home-ai-result" class="ai-result-container"></div>
           </div>
         </div>
       </section>
 
-      <!-- Halaman-halaman lainnya -->
+      <!-- Halaman Makanan -->
       <section id="food-page" class="page-section">
         <div class="page-header"><h2>Kuliner Khas Pulau Benan</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Kuliner AI</h3>
+          <p>
+            Bingung mau makan apa? Tanya saja! Contoh: "Saya mau sarapan" atau
+            "Lagi pengen yang berkuah".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="food-ai-input"
+              placeholder="Tulis keinginan Anda di sini..."
+            /><button id="food-ai-btn" class="btn btn-food">Tanya AI</button>
+          </div>
+          <div id="food-ai-result" class="ai-result-container"></div>
+        </div>
         <div id="food-grid"></div>
       </section>
+
+      <!-- Halaman Minuman -->
       <section id="drink-page" class="page-section">
         <div class="page-header"><h2>Pilihan Minuman</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Minuman AI</h3>
+          <p>
+            Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
+            "Minuman panas ada?".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="drink-ai-input"
+              placeholder="Tulis jenis minuman yang Anda mau..."
+            /><button id="drink-ai-btn" class="btn btn-drink">Tanya AI</button>
+          </div>
+          <div id="drink-ai-result" class="ai-result-container"></div>
+        </div>
         <div class="item-grid" id="drink-grid"></div>
       </section>
+
+      <!-- Halaman Transportasi -->
       <section id="transport-page" class="page-section">
         <div class="page-header"><h2>Transportasi Lokal</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Transportasi AI</h3>
+          <p>
+            Butuh saran transportasi? Contoh: "Mau ke Pantai Trikora dari pusat
+            kota" atau "Perjalanan rombongan 5 orang".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="transport-ai-input"
+              placeholder="Tulis kebutuhan perjalanan Anda..."
+            /><button id="transport-ai-btn" class="btn btn-transport">
+              Tanya AI
+            </button>
+          </div>
+          <div id="transport-ai-result" class="ai-result-container"></div>
+        </div>
         <div class="item-grid" id="transport-grid"></div>
       </section>
+
+      <!-- Halaman Penginapan -->
       <section id="homestay-page" class="page-section">
         <div class="page-header"><h2>Pilihan Penginapan</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Akomodasi AI</h3>
+          <p>
+            Cari penginapan yang pas? Contoh: "Cocok untuk keluarga" atau "Dekat
+            pusat kota dan murah".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="homestay-ai-input"
+              placeholder="Tulis tipe penginapan yang Anda cari..."
+            /><button id="homestay-ai-btn" class="btn btn-homestay">
+              Tanya AI
+            </button>
+          </div>
+          <div id="homestay-ai-result" class="ai-result-container"></div>
+        </div>
         <div class="item-grid" id="homestay-grid"></div>
       </section>
+
+      <!-- Halaman Oleh-Oleh -->
       <section id="souvenir-page" class="page-section">
         <div class="page-header"><h2>Oleh-Oleh Khas</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Oleh-Oleh AI</h3>
+          <p>
+            Bingung cari buah tangan? Contoh: "Oleh-oleh yang awet" atau "Yang
+            paling khas dari sini apa ya?".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="souvenir-ai-input"
+              placeholder="Tulis jenis oleh-oleh yang Anda mau..."
+            /><button id="souvenir-ai-btn" class="btn btn-souvenir">
+              Tanya AI
+            </button>
+          </div>
+          <div id="souvenir-ai-result" class="ai-result-container"></div>
+        </div>
         <div class="item-grid" id="souvenir-grid"></div>
       </section>
+
+      <!-- Halaman Paket Wisata -->
       <section id="tour-page" class="page-section">
         <div class="page-header"><h2>Paket Wisata Populer</h2></div>
+        <div class="ai-feature-box">
+          <h3>Asisten Wisata AI</h3>
+          <p>
+            Rencanakan perjalanan Anda! Contoh: "Buatkan rencana 2 hari untuk
+            pecinta pantai" atau "Saya punya waktu setengah hari".
+          </p>
+          <div class="ai-input-group">
+            <input
+              type="text"
+              id="tour-ai-input"
+              placeholder="Tulis keinginan Anda di sini..."
+            /><button id="tour-ai-btn" class="btn btn-tour">Tanya AI</button>
+          </div>
+          <div id="tour-ai-result" class="ai-result-container"></div>
+        </div>
         <div class="item-grid" id="tour-grid"></div>
       </section>
+
+      <!-- Halaman Galeri -->
       <section id="gallery-page" class="page-section">
         <div class="page-header"><h2>Galeri Keindahan Pulau Benan</h2></div>
         <div class="gallery-grid" id="gallery-grid"></div>
       </section>
+
+      <!-- Halaman Tentang Kami -->
       <section id="about-page" class="page-section">
         <div class="page-header"><h2>Tentang Merayau Benan</h2></div>
         <div class="about-content">
@@ -293,11 +383,17 @@
       </div>
     </div>
 
+    <!-- Lightbox/Popup untuk Gambar -->
+    <div id="lightbox-modal" class="lightbox">
+      <span class="lightbox-close-button">&times;</span>
+      <img class="lightbox-content" id="lightbox-img" />
+    </div>
+
     <!-- Footer -->
     <footer>
       <p>
         &copy; <span id="year"></span> Merayau Benan. Dibuat oleh KIR SMANSA
-        KATBID.
+        KATBIT.
       </p>
     </footer>
     <a href="#" id="back-to-top-btn" title="Kembali ke atas">&#8679;</a>

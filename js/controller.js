@@ -11,60 +11,49 @@ export const controller = {
     }
     view.updateYear();
     this.setupEventListeners();
-    this.initializeAllSliders(); // Inisialisasi semua slider
+    this.initializeAllSliders();
   },
 
-  // --- LOGIKA SLIDER BARU ---
+  // --- LOGIKA SLIDER ---
   initializeAllSliders() {
     document.querySelectorAll(".slider-container").forEach((slider) => {
       this.startAutoSlide(slider);
-
       slider.addEventListener("mouseenter", () => this.stopAutoSlide(slider));
       slider.addEventListener("mouseleave", () => this.startAutoSlide(slider));
     });
   },
-
   moveSlide(slider, direction) {
     const wrapper = slider.querySelector(".slider-wrapper");
     const slides = slider.querySelectorAll(".slider-slide");
     const totalSlides = slides.length;
     if (totalSlides <= 1) return;
-
     let currentIndex = parseInt(slider.dataset.currentIndex, 10);
     currentIndex = (currentIndex + direction + totalSlides) % totalSlides;
-
     wrapper.style.transform = `translateX(-${currentIndex * 100}%)`;
     slider.dataset.currentIndex = currentIndex;
-
     this.updateDots(slider, currentIndex);
   },
-
   goToSlide(slider, index) {
     const wrapper = slider.querySelector(".slider-wrapper");
     wrapper.style.transform = `translateX(-${index * 100}%)`;
     slider.dataset.currentIndex = index;
     this.updateDots(slider, index);
   },
-
   updateDots(slider, index) {
     const dots = slider.querySelectorAll(".dot");
     dots.forEach((dot, i) => {
       dot.classList.toggle("active", i === index);
     });
   },
-
   startAutoSlide(slider) {
     const sliderId = slider.dataset.id;
-    if (this.sliderIntervals[sliderId]) return; // Mencegah duplikasi interval
-
+    if (this.sliderIntervals[sliderId]) return;
     const totalSlides = slider.querySelectorAll(".slider-slide").length;
     if (totalSlides <= 1) return;
-
     this.sliderIntervals[sliderId] = setInterval(() => {
-      this.moveSlide(slider, 1); // Pindah ke slide berikutnya
-    }, 4000); // Ganti gambar setiap 4 detik
+      this.moveSlide(slider, 1);
+    }, 4000);
   },
-
   stopAutoSlide(slider) {
     const sliderId = slider.dataset.id;
     clearInterval(this.sliderIntervals[sliderId]);
@@ -73,25 +62,30 @@ export const controller = {
   // --- AKHIR LOGIKA SLIDER ---
 
   setupEventListeners() {
+    // Menggunakan satu event listener utama yang andal untuk semua klik
     document.body.addEventListener("click", (e) => {
-      // ... (event listener navigasi, service card, dll. tetap sama) ...
       const navLink = e.target.closest(".nav-links a");
       if (navLink) {
         e.preventDefault();
         this.handleNavigation(navLink.dataset.page);
+        // Menutup menu mobile setelah link diklik
+        document.querySelector(".nav-links").classList.remove("active");
         return;
       }
+
       const navLogo = e.target.closest(".nav-logo");
       if (navLogo) {
         e.preventDefault();
         this.handleNavigation("home");
         return;
       }
+
       const serviceCard = e.target.closest(".service-card");
       if (serviceCard) {
         this.handleNavigation(serviceCard.dataset.page);
         return;
       }
+
       const itemButton = e.target.closest(".item-card .btn");
       if (itemButton) {
         const type = itemButton.dataset.type;
@@ -99,24 +93,14 @@ export const controller = {
         this.handleOpenModal(type, name);
         return;
       }
+
       const aiButton = e.target.closest(".ai-input-group button");
       if (aiButton) {
         const type = aiButton.id.replace("-ai-btn", "");
         this.handleRecommendation(type);
         return;
       }
-      const closeModalButton = e.target.closest(".close-button");
-      if (closeModalButton) {
-        this.handleCloseModal();
-        return;
-      }
-      const modalBackground = e.target.closest("#order-modal");
-      if (modalBackground === e.target) {
-        this.handleCloseModal();
-        return;
-      }
 
-      // Event listener untuk tombol slider
       const sliderBtn = e.target.closest(".slider-btn");
       if (sliderBtn) {
         const slider = sliderBtn.closest(".slider-container");
@@ -125,7 +109,6 @@ export const controller = {
         return;
       }
 
-      // Event listener untuk titik navigasi slider
       const dot = e.target.closest(".dot");
       if (dot) {
         const slider = dot.closest(".slider-container");
@@ -133,13 +116,47 @@ export const controller = {
         this.goToSlide(slider, slideIndex);
         return;
       }
+
+      const imageToOpen = e.target.closest(
+        ".slider-slide img, .gallery-item img"
+      );
+      if (imageToOpen) {
+        view.openLightbox(imageToOpen.src);
+        return;
+      }
+
+      const closeModalButton = e.target.closest(".close-button");
+      if (closeModalButton) {
+        this.handleCloseModal();
+        return;
+      }
+
+      const closeLightboxButton = e.target.closest(".lightbox-close-button");
+      if (closeLightboxButton) {
+        view.closeLightbox();
+        return;
+      }
+
+      const modalBackground = e.target.closest("#order-modal");
+      if (modalBackground === e.target) {
+        this.handleCloseModal();
+        return;
+      }
+
+      const lightboxBackground = e.target.closest("#lightbox-modal");
+      if (lightboxBackground === e.target) {
+        view.closeLightbox();
+        return;
+      }
     });
 
-    // ... (sisa event listener tetap sama) ...
+    // Event listener untuk form submission
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
+
+    // Event listener untuk tombol Back to Top
     const backToTopButton = document.getElementById("back-to-top-btn");
     window.addEventListener("scroll", () => {
       if (window.scrollY > 300) {
@@ -152,19 +169,15 @@ export const controller = {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
+    // Event listener untuk tombol Hamburger
     const hamburgerButton = document.getElementById("hamburger-btn");
     const navLinks = document.querySelector(".nav-links");
     hamburgerButton.addEventListener("click", () => {
       navLinks.classList.toggle("active");
     });
-    navLinks.addEventListener("click", (e) => {
-      if (e.target.tagName === "A") {
-        navLinks.classList.remove("active");
-      }
-    });
   },
 
-  // ... (sisa fungsi controller lainnya tetap sama) ...
   async callSecureApi(prompt, button, resultContainerId) {
     view.setButtonLoadingState(button, true);
     view.renderAiResult(resultContainerId, "Meminta saran dari AI...", "");
@@ -191,6 +204,7 @@ export const controller = {
       view.setButtonLoadingState(button, false);
     }
   },
+
   handleRecommendation(type) {
     const inputElement = document.getElementById(`${type}-ai-input`);
     const buttonElement = document.getElementById(`${type}-ai-btn`);
@@ -229,9 +243,13 @@ export const controller = {
       case "tour":
         contextPrompt = `Anda adalah asisten wisata di Pulau Benan. Paket wisata kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", buatkan draf rencana perjalanan singkat yang menarik. Anda boleh merekomendasikan satu atau lebih paket wisata dari daftar yang ada sebagai bagian dari rencana tersebut.`;
         break;
+      case "home":
+        contextPrompt = `Anda adalah pemandu wisata virtual untuk Pulau Benan di Kepulauan Riau. Jawab pertanyaan pengguna: "${userInput}" secara informatif dan ramah. Berikan jawaban seolah-olah Anda sedang berbicara dengan seorang turis.`;
+        break;
     }
     this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
   },
+
   handleNavigation(pageId) {
     view.setActivePage(pageId);
   },

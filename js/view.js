@@ -5,12 +5,15 @@ export const view = {
     if (!grid) return;
 
     if (type === "gallery") {
-      // Logika khusus untuk galeri
       grid.innerHTML = data
         .map(
           (item) => `
-                <div class="gallery-item">
-                    <img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
+                <div class="gallery-item" data-source="Sumber: ${
+                  item.source || "Dokumentasi Pribadi"
+                }">
+                    <img src="${item.img}" alt="${
+            item.title
+          }" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
                     <div class="gallery-overlay">
                         <div class="gallery-title">${item.title}</div>
                     </div>
@@ -19,10 +22,8 @@ export const view = {
         )
         .join("");
     } else if (Array.isArray(data)) {
-      // Logika untuk data tanpa kategori
       grid.innerHTML = this.generateCardHtml(type, data);
     } else {
-      // Logika untuk data dengan kategori (makanan)
       let html = "";
       const categoryTitles = {
         sarapan: "Sarapan",
@@ -45,59 +46,49 @@ export const view = {
   generateCardHtml(type, items) {
     return items
       .map((item) => {
-        // Logika baru untuk membuat struktur HTML untuk slider
         const images = Array.isArray(item.img) ? item.img : [item.img];
         const hasMultipleImages = images.length > 1;
 
         const imageSlides = images
           .map(
-            (src) => `
-                <div class="slider-slide">
-                    <img src="${src}" alt="${item.name}" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
+            (image) => `
+                <div class="slider-slide" data-source="Sumber: ${
+                  image.source || "Dokumentasi Pribadi"
+                }">
+                    <img src="${image.src}" alt="${
+              item.name
+            }" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
                 </div>
             `
           )
           .join("");
 
         const sliderControls = hasMultipleImages
-          ? `
-                <button class="slider-btn prev" data-direction="-1">&#10094;</button>
-                <button class="slider-btn next" data-direction="1">&#10095;</button>
-                <div class="slider-dots">
-                    ${images
-                      .map(
-                        (_, i) =>
-                          `<span class="dot ${
-                            i === 0 ? "active" : ""
-                          }" data-slide="${i}"></span>`
-                      )
-                      .join("")}
-                </div>
-            `
+          ? `<button class="slider-btn prev" data-direction="-1">&#10094;</button><button class="slider-btn next" data-direction="1">&#10095;</button><div class="slider-dots">${images
+              .map(
+                (_, i) =>
+                  `<span class="dot ${
+                    i === 0 ? "active" : ""
+                  }" data-slide="${i}"></span>`
+              )
+              .join("")}</div>`
           : "";
-
-        return `
-                <div class="item-card">
-                    <div class="slider-container" data-id="${item.id}" data-current-index="0">
-                        <div class="slider-wrapper">
-                            ${imageSlides}
-                        </div>
-                        ${sliderControls}
-                    </div>
-                    <div class="item-card-content">
-                        <h3>${item.name}</h3>
-                        <p>${item.desc}</p>
-                        <button class="btn btn-${type}" data-type="${type}" data-name="${item.name}">
-                            Pesan Sekarang
-                        </button>
-                    </div>
-                </div>
-            `;
+        return `<div class="item-card"><div class="slider-container" data-id="${item.id}" data-current-index="0"><div class="slider-wrapper">${imageSlides}</div>${sliderControls}</div><div class="item-card-content"><h3>${item.name}</h3><p>${item.desc}</p><button class="btn btn-${type}" data-type="${type}" data-name="${item.name}">Pesan Sekarang</button></div></div>`;
       })
       .join("");
   },
 
-  // ... sisa fungsi view tetap sama ...
+  openLightbox(imageUrl) {
+    const lightboxModal = document.getElementById("lightbox-modal");
+    const lightboxImg = document.getElementById("lightbox-img");
+    lightboxModal.style.display = "block";
+    lightboxImg.src = imageUrl;
+  },
+
+  closeLightbox() {
+    document.getElementById("lightbox-modal").style.display = "none";
+  },
+
   renderAiResult(containerId, title, content) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -118,6 +109,7 @@ export const view = {
     card.innerHTML = html;
     container.appendChild(card);
   },
+
   setButtonLoadingState(button, isLoading) {
     if (isLoading) {
       button.disabled = true;
@@ -127,6 +119,7 @@ export const view = {
       button.innerHTML = "Tanya AI";
     }
   },
+
   setActivePage(pageId) {
     document
       .querySelectorAll(".page-section")
@@ -138,6 +131,7 @@ export const view = {
     document.getElementById(`nav-${pageId}`).classList.add("active");
     window.scrollTo(0, 0);
   },
+
   openModal(type, name) {
     const modal = document.getElementById("order-modal");
     document.getElementById(
@@ -167,10 +161,12 @@ export const view = {
     submitBtn.classList.add(`btn-${type}`);
     modal.style.display = "block";
   },
+
   closeModal() {
     document.getElementById("order-modal").style.display = "none";
     document.getElementById("modal-form").reset();
   },
+
   updateYear() {
     document.getElementById("year").textContent = new Date().getFullYear();
   },
