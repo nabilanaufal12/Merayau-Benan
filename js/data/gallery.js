@@ -45,49 +45,49 @@ export const galleryData = [
   {
     id: "g7",
     title: "Dermaga Benan Island Resort",
-    img: "assets/img/dermaga_benan.jpeg",
+    img: "assets/img/gallery/dermaga_benan.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Suasana", // Kategori baru
   },
   {
     id: "g8",
     title: "Pemandangan Pulau dari Ketinggian",
-    img: "assets/img/pemandangan_pulau.jpeg",
+    img: "assets/img/gallery/pemandangan_pulau.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Alam", // Kategori baru
   },
   {
     id: "g9",
     title: "Akomodasi Tepi Pantai",
-    img: "assets/img/akomodasi_tepi_pantai.jpeg",
+    img: "assets/img/gallery/akomodasi_tepi_pantai.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Suasana", // Kategori baru
   },
   {
     id: "g10",
     title: "Menikmati Senja di Benan",
-    img: "assets/img/menikmati_senja.jpeg",
+    img: "assets/img/gallery/menikmati_senja.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Suasana", // Kategori baru
   },
   {
     id: "g11",
     title: "Penginapan Unik di Atas Air",
-    img: "assets/img/penginapan_atas_air.jpeg",
+    img: "assets/img/gallery/penginapan_atas_air.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Aktivitas", // Kategori baru
   },
   {
     id: "g12",
     title: "Jalan Setapak Menuju Pantai",
-    img: "assets/img/jalan_setapak_pantai.jpeg",
+    img: "assets/img/gallery/jalan_setapak_pantai.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Pantai", // Kategori baru
   },
   {
     id: "g13",
     title: "Matahari Terbit di Ufuk Timur",
-    img: "assets/img/matahari_terbit.jpeg",
+    img: "assets/img/gallery/matahari_terbit.jpeg",
     source: "Dokumentasi Pribadi",
     category: "Pantai", // Kategori baru
   },

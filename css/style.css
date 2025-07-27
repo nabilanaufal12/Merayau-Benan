@@ -595,24 +595,6 @@ main {
   width: auto;
   white-space: nowrap;
 }
-.ai-result-container {
-  margin-top: 1.5rem;
-}
-.ai-result-card {
-  background-color: #f0f9ff;
-  border: 1px solid #e0f2fe;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  text-align: left;
-}
-.ai-result-card h4 {
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #0c4a6e;
-}
-.ai-result-card p {
-  color: #075985;
-}
 .loading-spinner {
   display: inline-block;
   width: 1em;
@@ -628,6 +610,60 @@ main {
   to {
     transform: rotate(360deg);
   }
+}
+
+/* === PERBAIKAN TAMPILAN HASIL AI (TERINTEGRASI) === */
+.ai-result-container {
+  position: relative;
+  max-height: 300px;
+  overflow-y: auto;
+  text-align: left;
+  margin-top: 1.5rem;
+}
+.ai-result-container::-webkit-scrollbar {
+  width: 8px;
+}
+.ai-result-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+.ai-result-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+.ai-result-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.ai-result-card {
+  background-color: #f0f9ff;
+  border: 1px solid #e0f2fe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  padding-right: 2.5rem;
+}
+.ai-result-card h4 {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #0c4a6e;
+}
+.ai-result-card p {
+  color: #075985;
+}
+.ai-result-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #9ca3af;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0.25rem;
+  transition: color 0.2s;
+}
+.ai-result-close-btn:hover {
+  color: #4b5563;
 }
 
 /* === GALERI === */

@@ -99,17 +99,34 @@ export const view = {
   renderAiResult(containerId, title, content) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    container.innerHTML = ""; // Clear previous results
+
+    // Hapus konten sebelumnya
+    container.innerHTML = "";
+
     if (!title && !content) return;
+
     const card = document.createElement("div");
     card.className = "ai-result-card";
+
+    // Buat tombol tutup
+    const closeButton = document.createElement("button");
+    closeButton.className = "ai-result-close-btn";
+    closeButton.innerHTML = "&times;"; // Simbol 'x'
+    closeButton.onclick = () => {
+      container.innerHTML = ""; // Hapus konten saat tombol diklik
+    };
+
     let html = "";
-    if (title) html += `<h4>${title}</h4>`;
+    if (title) {
+      html += `<h4>${title}</h4>`;
+    }
     if (content) {
       const formattedContent = content.replace(/\n/g, "<br>");
       html += `<p>${formattedContent}</p>`;
     }
+
     card.innerHTML = html;
+    card.appendChild(closeButton); // Tambahkan tombol tutup ke dalam kartu
     container.appendChild(card);
   },
 
