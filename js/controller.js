@@ -3,7 +3,7 @@ import { model } from "./model.js";
 import { view } from "./view.js";
 
 export const controller = {
-  sliderIntervals: {}, // Menyimpan interval untuk setiap slider
+  sliderIntervals: {},
 
   init() {
     for (const type in model.data) {
@@ -14,7 +14,6 @@ export const controller = {
     this.initializeAllSliders();
   },
 
-  // --- LOGIKA SLIDER ---
   initializeAllSliders() {
     document.querySelectorAll(".slider-container").forEach((slider) => {
       this.startAutoSlide(slider);
@@ -41,48 +40,70 @@ export const controller = {
   },
   updateDots(slider, index) {
     const dots = slider.querySelectorAll(".dot");
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("active", i === index);
-    });
+    dots.forEach((dot, i) => dot.classList.toggle("active", i === index));
   },
   startAutoSlide(slider) {
     const sliderId = slider.dataset.id;
     if (this.sliderIntervals[sliderId]) return;
     const totalSlides = slider.querySelectorAll(".slider-slide").length;
     if (totalSlides <= 1) return;
-    this.sliderIntervals[sliderId] = setInterval(() => {
-      this.moveSlide(slider, 1);
-    }, 4000);
+    this.sliderIntervals[sliderId] = setInterval(
+      () => this.moveSlide(slider, 1),
+      4000
+    );
   },
   stopAutoSlide(slider) {
     const sliderId = slider.dataset.id;
     clearInterval(this.sliderIntervals[sliderId]);
     delete this.sliderIntervals[sliderId];
   },
-  // --- AKHIR LOGIKA SLIDER ---
 
   setupEventListeners() {
-    // Menggunakan satu event listener utama yang andal untuk semua klik
     document.body.addEventListener("click", (e) => {
-      const navLink = e.target.closest(".nav-links a");
+      const navLink = e.target.closest(".nav-links a, .nav-logo");
       if (navLink) {
         e.preventDefault();
         this.handleNavigation(navLink.dataset.page);
-        // Menutup menu mobile setelah link diklik
         document.querySelector(".nav-links").classList.remove("active");
         return;
       }
 
-      const navLogo = e.target.closest(".nav-logo");
-      if (navLogo) {
-        e.preventDefault();
-        this.handleNavigation("home");
+      const serviceCard = e.target.closest(".service-card, .featured-card");
+      if (serviceCard) {
+        this.handleNavigation(serviceCard.dataset.page);
         return;
       }
 
-      const serviceCard = e.target.closest(".service-card");
-      if (serviceCard) {
-        this.handleNavigation(serviceCard.dataset.page);
+      const backButton = e.target.closest(".btn-back-to-services");
+      if (backButton) {
+        this.handleNavigation(backButton.dataset.page);
+        return;
+      }
+
+      const secondaryCta = e.target.closest(".btn-secondary");
+      if (secondaryCta) {
+        this.handleNavigation(secondaryCta.dataset.page);
+        return;
+      }
+
+      const suggestionBtn = e.target.closest(".btn-suggestion");
+      if (suggestionBtn) {
+        const question = suggestionBtn.textContent;
+        const aiInput = document.getElementById("home-ai-input");
+        const aiButton = document.getElementById("home-ai-btn");
+        aiInput.value = question;
+        aiButton.click();
+        return;
+      }
+
+      const filterBtn = e.target.closest(".filter-btn");
+      if (filterBtn) {
+        document
+          .querySelectorAll(".filter-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        filterBtn.classList.add("active");
+        const filterCategory = filterBtn.dataset.filter;
+        view.renderGrid("gallery", model.data.gallery, filterCategory);
         return;
       }
 
@@ -125,56 +146,35 @@ export const controller = {
         return;
       }
 
-      const closeModalButton = e.target.closest(".close-button");
+      const closeModalButton = e.target.closest(
+        ".close-button, .lightbox-close-button"
+      );
       if (closeModalButton) {
-        this.handleCloseModal();
-        return;
-      }
-
-      const closeLightboxButton = e.target.closest(".lightbox-close-button");
-      if (closeLightboxButton) {
+        view.closeModal();
         view.closeLightbox();
         return;
       }
 
-      const modalBackground = e.target.closest("#order-modal");
-      if (modalBackground === e.target) {
-        this.handleCloseModal();
-        return;
-      }
-
-      const lightboxBackground = e.target.closest("#lightbox-modal");
-      if (lightboxBackground === e.target) {
-        view.closeLightbox();
-        return;
-      }
+      if (e.target.id === "order-modal") this.handleCloseModal();
+      if (e.target.id === "lightbox-modal") view.closeLightbox();
     });
 
-    // Event listener untuk form submission
     document.getElementById("modal-form").addEventListener("submit", (e) => {
       e.preventDefault();
       this.handleFormSubmit();
     });
 
-    // Event listener untuk tombol Back to Top
     const backToTopButton = document.getElementById("back-to-top-btn");
     window.addEventListener("scroll", () => {
-      if (window.scrollY > 300) {
-        backToTopButton.classList.add("show");
-      } else {
-        backToTopButton.classList.remove("show");
-      }
+      backToTopButton.classList.toggle("show", window.scrollY > 300);
     });
     backToTopButton.addEventListener("click", (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
-    // Event listener untuk tombol Hamburger
-    const hamburgerButton = document.getElementById("hamburger-btn");
-    const navLinks = document.querySelector(".nav-links");
-    hamburgerButton.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
+    document.getElementById("hamburger-btn").addEventListener("click", () => {
+      document.querySelector(".nav-links").classList.toggle("active");
     });
   },
 
@@ -189,9 +189,8 @@ export const controller = {
         body: JSON.stringify({ prompt: prompt }),
       });
       const data = await response.json();
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(data.error || `HTTP error! status: ${response.status}`);
-      }
       view.renderAiResult(resultContainerId, "Saran dari AI", data.result);
     } catch (error) {
       console.error("Error calling secure API:", error);
@@ -214,37 +213,36 @@ export const controller = {
       alert("Mohon tulis keinginan Anda terlebih dahulu.");
       return;
     }
-    let allItems;
-    if (Array.isArray(model.data[type])) {
-      allItems = model.data[type];
-    } else {
-      allItems = Object.values(model.data[type]).flat();
-    }
+    let allItems = model.data[type]
+      ? Array.isArray(model.data[type])
+        ? model.data[type]
+        : Object.values(model.data[type]).flat()
+      : [];
     const itemList = allItems
       .map((item) => `"${item.name}" (deskripsi: ${item.desc})`)
       .join("; ");
     let contextPrompt = "";
     switch (type) {
       case "food":
-        contextPrompt = `Anda adalah asisten kuliner untuk layanan lokal di Pulau Benan. Daftar menu yang kami sediakan adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU menu dari daftar tersebut. Berikan jawaban singkat dan menarik, sebutkan nama menunya dengan jelas.`;
+        contextPrompt = `Anda adalah asisten kuliner di Pulau Benan. Menu kami: ${itemList}. Berdasarkan permintaan: "${userInput}", rekomendasikan SATU menu. Beri jawaban singkat.`;
         break;
       case "drink":
-        contextPrompt = `Anda adalah asisten minuman di Pulau Benan. Daftar minuman kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU minuman yang paling cocok. Berikan alasan singkat.`;
+        contextPrompt = `Anda adalah asisten minuman di Pulau Benan. Minuman kami: ${itemList}. Berdasarkan permintaan: "${userInput}", rekomendasikan SATU minuman. Beri alasan singkat.`;
         break;
       case "transport":
-        contextPrompt = `Anda adalah asisten transportasi di Pulau Benan. Layanan kami adalah: ${itemList}. Berdasarkan kebutuhan pengguna: "${userInput}", rekomendasikan SATU layanan yang paling sesuai. Jelaskan kenapa layanan itu cocok.`;
+        contextPrompt = `Anda adalah asisten transportasi di Pulau Benan. Layanan kami: ${itemList}. Berdasarkan kebutuhan: "${userInput}", rekomendasikan SATU layanan. Jelaskan kecocokannya.`;
         break;
       case "homestay":
-        contextPrompt = `Anda adalah asisten akomodasi di Pulau Benan. Pilihan penginapan kami adalah: ${itemList}. Berdasarkan keinginan pengguna: "${userInput}", rekomendasikan SATU penginapan yang paling pas. Berikan alasan singkat.`;
+        contextPrompt = `Anda adalah asisten akomodasi di Pulau Benan. Penginapan kami: ${itemList}. Berdasarkan keinginan: "${userInput}", rekomendasikan SATU penginapan. Beri alasan.`;
         break;
       case "souvenir":
-        contextPrompt = `Anda adalah asisten belanja oleh-oleh di Pulau Benan. Produk kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", rekomendasikan SATU produk. Jelaskan keunikannya.`;
+        contextPrompt = `Anda adalah asisten oleh-oleh di Pulau Benan. Produk kami: ${itemList}. Berdasarkan permintaan: "${userInput}", rekomendasikan SATU produk. Jelaskan keunikannya.`;
         break;
       case "tour":
-        contextPrompt = `Anda adalah asisten wisata di Pulau Benan. Paket wisata kami adalah: ${itemList}. Berdasarkan permintaan pengguna: "${userInput}", buatkan draf rencana perjalanan singkat yang menarik. Anda boleh merekomendasikan satu atau lebih paket wisata dari daftar yang ada sebagai bagian dari rencana tersebut.`;
+        contextPrompt = `Anda adalah asisten wisata di Pulau Benan. Paket kami: ${itemList}. Berdasarkan permintaan: "${userInput}", buatkan draf rencana perjalanan singkat.`;
         break;
       case "home":
-        contextPrompt = `Anda adalah pemandu wisata virtual untuk Pulau Benan di Kepulauan Riau. Jawab pertanyaan pengguna: "${userInput}" secara informatif dan ramah. Berikan jawaban seolah-olah Anda sedang berbicara dengan seorang turis.`;
+        contextPrompt = `Anda adalah pemandu wisata virtual untuk Pulau Benan. Jawab pertanyaan: "${userInput}" secara informatif dan ramah.`;
         break;
     }
     this.callSecureApi(contextPrompt, buttonElement, resultContainerId);
@@ -328,8 +326,7 @@ export const controller = {
     } catch (error) {
       console.error("Error submitting form:", error);
       alert(
-        "Terjadi kesalahan saat membuat pesan WhatsApp. Silakan periksa kembali isian Anda.\n\nError: " +
-          error.message
+        `Terjadi kesalahan saat membuat pesan WhatsApp. Silakan periksa kembali isian Anda.\n\nError: ${error.message}`
       );
     }
   },

@@ -1,24 +1,29 @@
 // js/view.js
 export const view = {
-  renderGrid(type, data) {
+  renderGrid(type, data, filter = "all") {
     const grid = document.getElementById(`${type}-grid`);
     if (!grid) return;
 
     if (type === "gallery") {
-      grid.innerHTML = data
+      const filteredData =
+        filter === "all"
+          ? data
+          : data.filter((item) => item.category === filter);
+
+      grid.innerHTML = filteredData
         .map(
           (item) => `
-                <div class="gallery-item" data-source="Sumber: ${
-                  item.source || "Dokumentasi Pribadi"
-                }">
-                    <img src="${item.img}" alt="${
+        <div class="gallery-item" data-source="Sumber: ${
+          item.source || "Dokumentasi Pribadi"
+        }">
+            <img src="${item.img}" alt="${
             item.title
           }" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
-                    <div class="gallery-overlay">
-                        <div class="gallery-title">${item.title}</div>
-                    </div>
-                </div>
-            `
+            <div class="gallery-overlay">
+                <div class="gallery-title">${item.title}</div>
+            </div>
+        </div>
+      `
         )
         .join("");
     } else if (Array.isArray(data)) {
@@ -48,21 +53,23 @@ export const view = {
       .map((item) => {
         const images = Array.isArray(item.img) ? item.img : [item.img];
         const hasMultipleImages = images.length > 1;
-
         const imageSlides = images
           .map(
             (image) => `
-                <div class="slider-slide" data-source="Sumber: ${
-                  image.source || "Dokumentasi Pribadi"
-                }">
-                    <img src="${image.src}" alt="${
+            <div class="slider-slide" data-source="Sumber: ${
+              typeof image === "string"
+                ? "Dokumentasi Pribadi"
+                : image.source || "Dokumentasi Pribadi"
+            }">
+                <img src="${
+                  typeof image === "string" ? image : image.src
+                }" alt="${
               item.name
             }" loading="lazy" onerror="this.onerror=null;this.src='https://placehold.co/600x400/cccccc/ffffff?text=Gambar+Tidak+Tersedia';">
-                </div>
-            `
+            </div>
+        `
           )
           .join("");
-
         const sliderControls = hasMultipleImages
           ? `<button class="slider-btn prev" data-direction="-1">&#10094;</button><button class="slider-btn next" data-direction="1">&#10095;</button><div class="slider-dots">${images
               .map(
@@ -92,16 +99,12 @@ export const view = {
   renderAiResult(containerId, title, content) {
     const container = document.getElementById(containerId);
     if (!container) return;
-    while (container.firstChild) {
-      container.removeChild(container.firstChild);
-    }
+    container.innerHTML = ""; // Clear previous results
     if (!title && !content) return;
     const card = document.createElement("div");
     card.className = "ai-result-card";
     let html = "";
-    if (title) {
-      html += `<h4>${title}</h4>`;
-    }
+    if (title) html += `<h4>${title}</h4>`;
     if (content) {
       const formattedContent = content.replace(/\n/g, "<br>");
       html += `<p>${formattedContent}</p>`;
@@ -115,8 +118,8 @@ export const view = {
       button.disabled = true;
       button.innerHTML = `<span class="loading-spinner"></span> Memproses...`;
     } else {
-      button.disabled = false;
       button.innerHTML = "Tanya AI";
+      button.disabled = false;
     }
   },
 
@@ -124,11 +127,27 @@ export const view = {
     document
       .querySelectorAll(".page-section")
       .forEach((s) => s.classList.remove("active"));
-    document.getElementById(`${pageId}-page`).classList.add("active");
+    const pageElement = document.getElementById(`${pageId}-page`);
+    if (pageElement) pageElement.classList.add("active");
+
     document
       .querySelectorAll(".nav-links a")
       .forEach((l) => l.classList.remove("active"));
-    document.getElementById(`nav-${pageId}`).classList.add("active");
+    const servicePages = [
+      "food",
+      "drink",
+      "transport",
+      "homestay",
+      "souvenir",
+      "tour",
+    ];
+    if (servicePages.includes(pageId)) {
+      const layananLink = document.getElementById("nav-layanan");
+      if (layananLink) layananLink.classList.add("active");
+    } else {
+      const navLink = document.getElementById(`nav-${pageId}`);
+      if (navLink) navLink.classList.add("active");
+    }
     window.scrollTo(0, 0);
   },
 
@@ -139,9 +158,9 @@ export const view = {
     ).textContent = `Formulir Pesan: ${name}`;
     document.getElementById("modal-item-name").value = name;
     document.getElementById("modal-item-type").value = type;
-    modal.querySelectorAll("input, textarea").forEach((input) => {
-      input.required = false;
-    });
+    modal
+      .querySelectorAll("input, textarea")
+      .forEach((input) => (input.required = false));
     document.getElementById("modal-name").required = true;
     document.getElementById("modal-phone").required = true;
     document
@@ -152,9 +171,7 @@ export const view = {
       activeFieldsContainer.style.display = "block";
       activeFieldsContainer
         .querySelectorAll('input[type="date"], input[type="number"]')
-        .forEach((input) => {
-          input.required = true;
-        });
+        .forEach((input) => (input.required = true));
     }
     const submitBtn = document.getElementById("modal-submit-btn");
     submitBtn.className = "btn";

@@ -10,10 +10,6 @@ export const foodData = {
           src: "https://akcdn.detik.net.id/visual/2020/03/20/c863d02e-09d9-4000-b6e2-1e71287a5441_169.jpeg?w=700&q=90",
           source: "Detik.com",
         },
-        {
-          src: "https://placehold.co/600x400/f97316/white?text=Lontong+Detail",
-          source: "Dokumentasi Pribadi",
-        },
       ],
     },
     {

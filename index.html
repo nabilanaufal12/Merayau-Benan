@@ -4,10 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Merayau Benan - Pulau Benan</title>
-
-    <link rel="icon" href="assets/logo.png" type="image/png" />
+    <link rel="icon" href="assets/logo_kir.png" type="image/png" />
     <link rel="stylesheet" href="css/style.css" />
-
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,15 +17,10 @@
     <!-- Navigasi -->
     <nav class="navbar">
       <div class="container nav-content">
-        <a href="#" class="nav-logo">Merayau Benan</a>
+        <a href="#" class="nav-logo" data-page="home">Merayau Benan</a>
         <div class="nav-links">
           <a href="#" id="nav-home" class="active" data-page="home">Beranda</a>
-          <a href="#" id="nav-food" data-page="food">Makanan</a>
-          <a href="#" id="nav-drink" data-page="drink">Minuman</a>
-          <a href="#" id="nav-transport" data-page="transport">Transportasi</a>
-          <a href="#" id="nav-homestay" data-page="homestay">Penginapan</a>
-          <a href="#" id="nav-souvenir" data-page="souvenir">Oleh-Oleh</a>
-          <a href="#" id="nav-tour" data-page="tour">Paket Wisata</a>
+          <a href="#" id="nav-layanan" data-page="layanan">Layanan</a>
           <a href="#" id="nav-gallery" data-page="gallery">Galeri</a>
           <a href="#" id="nav-about" data-page="about">Tentang Kami</a>
         </div>
@@ -40,206 +33,585 @@
     </nav>
 
     <!-- Konten Utama -->
-    <main class="container">
+    <main>
       <!-- Halaman Beranda -->
       <section id="home-page" class="page-section active">
-        <div class="hero-section">
-          <h1 class="hero-title">Jelajahi Pesona Pulau Benan</h1>
-          <p class="hero-subtitle">
-            Punya pertanyaan tentang Pulau Benan? Tanyakan pada Asisten AI kami!
-          </p>
-          <div class="ai-feature-box hero-ai-box">
-            <h3>Asisten Wisata Pulau Benan</h3>
-            <p>
-              Tanya apa saja, mulai dari "ada pantai apa saja?" hingga
-              "bagaimana cara terbaik untuk berkeliling pulau?".
-            </p>
-            <div class="ai-input-group">
-              <input
-                type="text"
-                id="home-ai-input"
-                placeholder="Ketik pertanyaan Anda di sini..."
-              />
-              <button id="home-ai-btn" class="btn btn-primary">Tanya AI</button>
+        <header class="hero-header">
+          <div class="hero-overlay">
+            <div class="hero-content container">
+              <h1 class="hero-title">Jelajahi Pesona Pulau Benan</h1>
+              <p class="hero-subtitle">
+                Punya pertanyaan tentang Pulau Benan? Tanyakan pada Asisten AI
+                kami!
+              </p>
+              <div class="ai-feature-box hero-ai-box">
+                <h3 class="ai-box-title">Asisten Wisata Pulau Benan</h3>
+                <p class="ai-box-desc">
+                  Tanya apa saja, dari "ada pantai apa saja?" hingga "bagaimana
+                  cara terbaik untuk berkeliling pulau?".
+                </p>
+                <div class="ai-input-group">
+                  <input
+                    type="text"
+                    id="home-ai-input"
+                    placeholder="Ketik pertanyaan Anda di sini..."
+                  />
+                  <button id="home-ai-btn" class="btn btn-primary">
+                    Tanya AI
+                  </button>
+                </div>
+                <div class="suggested-questions">
+                  <button class="btn-suggestion">Rekomendasi Makanan</button>
+                  <button class="btn-suggestion">
+                    Homestay untuk keluarga
+                  </button>
+                  <button class="btn-suggestion">Paket Mancing</button>
+                </div>
+                <div id="home-ai-result" class="ai-result-container"></div>
+              </div>
+              <div class="hero-cta">
+                <button class="btn-secondary" data-page="layanan">
+                  Lihat Semua Layanan
+                </button>
+              </div>
             </div>
-            <div id="home-ai-result" class="ai-result-container"></div>
+          </div>
+        </header>
+        <section class="featured-services">
+          <div class="container">
+            <div class="section-header">
+              <h2>Apa yang Bisa Anda Lakukan di Benan?</h2>
+              <p>
+                Dari kuliner laut yang lezat hingga petualangan memancing yang
+                seru, temukan pengalaman tak terlupakan Anda di sini.
+              </p>
+            </div>
+            <div class="featured-grid">
+              <div class="featured-card" data-page="food">
+                <div
+                  class="featured-icon-wrapper"
+                  style="--icon-bg: #fff7ed; --icon-color: #f97316"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 3v18h18" />
+                    <path d="M18.7 3.7a2.1 2.1 0 0 1 3 3L13 15l-4-4Z" />
+                  </svg>
+                </div>
+                <h3>Kuliner Khas</h3>
+                <p>
+                  Cicipi hidangan laut segar seperti Gonggong, Ikan Bakar, dan
+                  masakan Melayu otentik lainnya.
+                </p>
+              </div>
+              <div class="featured-card" data-page="tour">
+                <div
+                  class="featured-icon-wrapper"
+                  style="--icon-bg: #f5f3ff; --icon-color: #8b5cf6"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path
+                      d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.59a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                    />
+                  </svg>
+                </div>
+                <h3>Paket Wisata</h3>
+                <p>
+                  Rasakan sensasi memancing di kelong, workshop kerupuk ikan,
+                  hingga trip budaya Melayu.
+                </p>
+              </div>
+              <div class="featured-card" data-page="homestay">
+                <div
+                  class="featured-icon-wrapper"
+                  style="--icon-bg: #f0fdfa; --icon-color: #14b8a6"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </div>
+                <h3>Penginapan Nyaman</h3>
+                <p>
+                  Temukan homestay dan penginapan yang nyaman dengan pemandangan
+                  laut yang indah.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+
+      <!-- Halaman Layanan (Menu Utama) -->
+      <section id="layanan-page" class="page-section">
+        <div class="container">
+          <div class="page-header">
+            <h2>Layanan Kami</h2>
+            <p
+              style="
+                font-size: 1.25rem;
+                color: var(--color-light-text);
+                max-width: 650px;
+                margin: 1rem auto 0;
+              "
+            >
+              Jelajahi semua yang kami tawarkan di Pulau Benan. Pilih kategori
+              di bawah untuk melihat detail lebih lanjut.
+            </p>
+          </div>
+          <div class="services-menu-grid">
+            <div class="service-card" data-page="food">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #fff7ed; --icon-color: #f97316"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M3 3v18h18" />
+                  <path d="M18.7 3.7a2.1 2.1 0 0 1 3 3L13 15l-4-4Z" />
+                </svg>
+              </div>
+              <h3>Kuliner Khas</h3>
+              <p>
+                Cicipi hidangan otentik Pulau Benan, dari sarapan hingga makan
+                malam spesial.
+              </p>
+            </div>
+            <div class="service-card" data-page="drink">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #ecfeff; --icon-color: #22d3ee"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M15.2 22H8.8a2 2 0 0 1-2-1.79L5 11h14l-1.81 9.21A2 2 0 0 1 15.2 22Z"
+                  />
+                  <path d="M6 11V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v7" />
+                </svg>
+              </div>
+              <h3>Minuman Segar</h3>
+              <p>Lepaskan dahaga dengan pilihan minuman dingin dan panas.</p>
+            </div>
+            <div class="service-card" data-page="transport">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #f0f9ff; --icon-color: #0ea5e9"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M19 17h2l.64-2.54a4 4 0 0 0-3.11-5.42l-1.16-.31a2 2 0 0 1-1.6-1.9l-.2-2.8a2 2 0 0 0-2-1.8H8.4a2 2 0 0 0-2 1.8l-.2 2.8a2 2 0 0 1-1.6 1.9l-1.16.31a4 4 0 0 0-3.11 5.42L2 17h2"
+                  />
+                  <path d="M12 17V5" />
+                  <path d="M12 5H6" />
+                  <path d="M12 5h6" />
+                </svg>
+              </div>
+              <h3>Transportasi Lokal</h3>
+              <p>
+                Jelajahi pulau dengan mudah menggunakan layanan transportasi
+                kami.
+              </p>
+            </div>
+            <div class="service-card" data-page="homestay">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #f0fdfa; --icon-color: #14b8a6"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                  <polyline points="9 22 9 12 15 12 15 22" />
+                </svg>
+              </div>
+              <h3>Penginapan Nyaman</h3>
+              <p>
+                Temukan tempat istirahat yang sempurna setelah seharian
+                beraktivitas.
+              </p>
+            </div>
+            <div class="service-card" data-page="souvenir">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #fefce8; --icon-color: #eab308"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="M6 10H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"
+                  />
+                  <path
+                    d="M6 14H4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2h-2"
+                  />
+                  <path d="M6 10v4" />
+                  <path d="M18 10v4" />
+                  <path d="M12 22v-8m0-4V2" />
+                </svg>
+              </div>
+              <h3>Oleh-Oleh Khas</h3>
+              <p>Bawa pulang kenang-kenangan unik dari Pulau Benan.</p>
+            </div>
+            <div class="service-card" data-page="tour">
+              <div
+                class="featured-icon-wrapper"
+                style="--icon-bg: #f5f3ff; --icon-color: #8b5cf6"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path
+                    d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.59a2 2 0 0 1-2.83-2.83l8.49-8.48"
+                  />
+                </svg>
+              </div>
+              <h3>Paket Wisata</h3>
+              <p>
+                Ikuti petualangan tak terlupakan dengan paket wisata pilihan
+                kami.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       <!-- Halaman Makanan -->
       <section id="food-page" class="page-section">
-        <div class="page-header"><h2>Kuliner Khas Pulau Benan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Kuliner AI</h3>
-          <p>
-            Bingung mau makan apa? Tanya saja! Contoh: "Saya mau sarapan" atau
-            "Lagi pengen yang berkuah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="food-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="food-ai-btn" class="btn btn-food">Tanya AI</button>
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
+            </button>
+            <h2>Kuliner Khas Pulau Benan</h2>
           </div>
-          <div id="food-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Kuliner AI</h3>
+            <p>
+              Bingung mau makan apa? Tanya saja! Contoh: "Saya mau sarapan" atau
+              "Lagi pengen yang berkuah".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="food-ai-input"
+                placeholder="Tulis keinginan Anda di sini..."
+              /><button id="food-ai-btn" class="btn btn-food">Tanya AI</button>
+            </div>
+            <div id="food-ai-result" class="ai-result-container"></div>
+          </div>
+          <div id="food-grid"></div>
         </div>
-        <div id="food-grid"></div>
       </section>
 
       <!-- Halaman Minuman -->
       <section id="drink-page" class="page-section">
-        <div class="page-header"><h2>Pilihan Minuman</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Minuman AI</h3>
-          <p>
-            Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
-            "Minuman panas ada?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="drink-ai-input"
-              placeholder="Tulis jenis minuman yang Anda mau..."
-            /><button id="drink-ai-btn" class="btn btn-drink">Tanya AI</button>
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
+            </button>
+            <h2>Pilihan Minuman</h2>
           </div>
-          <div id="drink-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Minuman AI</h3>
+            <p>
+              Cari minuman yang pas? Contoh: "Yang paling segar apa?" atau
+              "Minuman panas ada?".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="drink-ai-input"
+                placeholder="Tulis jenis minuman yang Anda mau..."
+              /><button id="drink-ai-btn" class="btn btn-drink">
+                Tanya AI
+              </button>
+            </div>
+            <div id="drink-ai-result" class="ai-result-container"></div>
+          </div>
+          <div class="item-grid" id="drink-grid"></div>
         </div>
-        <div class="item-grid" id="drink-grid"></div>
       </section>
 
       <!-- Halaman Transportasi -->
       <section id="transport-page" class="page-section">
-        <div class="page-header"><h2>Transportasi Lokal</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Transportasi AI</h3>
-          <p>
-            Butuh saran transportasi? Contoh: "Mau ke Pantai Trikora dari pusat
-            kota" atau "Perjalanan rombongan 5 orang".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="transport-ai-input"
-              placeholder="Tulis kebutuhan perjalanan Anda..."
-            /><button id="transport-ai-btn" class="btn btn-transport">
-              Tanya AI
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
             </button>
+            <h2>Transportasi Lokal</h2>
           </div>
-          <div id="transport-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Transportasi AI</h3>
+            <p>
+              Butuh saran transportasi? Contoh: "Mau ke Pantai dari penginapan"
+              atau "Perjalanan rombongan 5 orang".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="transport-ai-input"
+                placeholder="Tulis kebutuhan perjalanan Anda..."
+              /><button id="transport-ai-btn" class="btn btn-transport">
+                Tanya AI
+              </button>
+            </div>
+            <div id="transport-ai-result" class="ai-result-container"></div>
+          </div>
+          <div class="item-grid" id="transport-grid"></div>
         </div>
-        <div class="item-grid" id="transport-grid"></div>
       </section>
 
       <!-- Halaman Penginapan -->
       <section id="homestay-page" class="page-section">
-        <div class="page-header"><h2>Pilihan Penginapan</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Akomodasi AI</h3>
-          <p>
-            Cari penginapan yang pas? Contoh: "Cocok untuk keluarga" atau "Dekat
-            pusat kota dan murah".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="homestay-ai-input"
-              placeholder="Tulis tipe penginapan yang Anda cari..."
-            /><button id="homestay-ai-btn" class="btn btn-homestay">
-              Tanya AI
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
             </button>
+            <h2>Pilihan Penginapan</h2>
           </div>
-          <div id="homestay-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Akomodasi AI</h3>
+            <p>
+              Cari penginapan yang pas? Contoh: "Cocok untuk keluarga" atau
+              "Dekat pusat kota dan murah".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="homestay-ai-input"
+                placeholder="Tulis tipe penginapan yang Anda cari..."
+              /><button id="homestay-ai-btn" class="btn btn-homestay">
+                Tanya AI
+              </button>
+            </div>
+            <div id="homestay-ai-result" class="ai-result-container"></div>
+          </div>
+          <div class="item-grid" id="homestay-grid"></div>
         </div>
-        <div class="item-grid" id="homestay-grid"></div>
       </section>
 
       <!-- Halaman Oleh-Oleh -->
       <section id="souvenir-page" class="page-section">
-        <div class="page-header"><h2>Oleh-Oleh Khas</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Oleh-Oleh AI</h3>
-          <p>
-            Bingung cari buah tangan? Contoh: "Oleh-oleh yang awet" atau "Yang
-            paling khas dari sini apa ya?".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="souvenir-ai-input"
-              placeholder="Tulis jenis oleh-oleh yang Anda mau..."
-            /><button id="souvenir-ai-btn" class="btn btn-souvenir">
-              Tanya AI
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
             </button>
+            <h2>Oleh-Oleh Khas</h2>
           </div>
-          <div id="souvenir-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Oleh-Oleh AI</h3>
+            <p>
+              Bingung cari buah tangan? Contoh: "Oleh-oleh yang awet" atau "Yang
+              paling khas dari sini apa ya?".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="souvenir-ai-input"
+                placeholder="Tulis jenis oleh-oleh yang Anda mau..."
+              /><button id="souvenir-ai-btn" class="btn btn-souvenir">
+                Tanya AI
+              </button>
+            </div>
+            <div id="souvenir-ai-result" class="ai-result-container"></div>
+          </div>
+          <div class="item-grid" id="souvenir-grid"></div>
         </div>
-        <div class="item-grid" id="souvenir-grid"></div>
       </section>
 
       <!-- Halaman Paket Wisata -->
       <section id="tour-page" class="page-section">
-        <div class="page-header"><h2>Paket Wisata Populer</h2></div>
-        <div class="ai-feature-box">
-          <h3>Asisten Wisata AI</h3>
-          <p>
-            Rencanakan perjalanan Anda! Contoh: "Buatkan rencana 2 hari untuk
-            pecinta pantai" atau "Saya punya waktu setengah hari".
-          </p>
-          <div class="ai-input-group">
-            <input
-              type="text"
-              id="tour-ai-input"
-              placeholder="Tulis keinginan Anda di sini..."
-            /><button id="tour-ai-btn" class="btn btn-tour">Tanya AI</button>
+        <div class="container">
+          <div class="page-header">
+            <button class="btn-back-to-services" data-page="layanan">
+              &larr; Kembali ke Layanan
+            </button>
+            <h2>Paket Wisata Populer</h2>
           </div>
-          <div id="tour-ai-result" class="ai-result-container"></div>
+          <div class="ai-feature-box">
+            <h3>Asisten Wisata AI</h3>
+            <p>
+              Rencanakan perjalanan Anda! Contoh: "Buatkan rencana 2 hari untuk
+              pecinta pantai" atau "Saya punya waktu setengah hari".
+            </p>
+            <div class="ai-input-group">
+              <input
+                type="text"
+                id="tour-ai-input"
+                placeholder="Tulis keinginan Anda di sini..."
+              /><button id="tour-ai-btn" class="btn btn-tour">Tanya AI</button>
+            </div>
+            <div id="tour-ai-result" class="ai-result-container"></div>
+          </div>
+          <div class="item-grid" id="tour-grid"></div>
         </div>
-        <div class="item-grid" id="tour-grid"></div>
       </section>
 
       <!-- Halaman Galeri -->
       <section id="gallery-page" class="page-section">
-        <div class="page-header"><h2>Galeri Keindahan Pulau Benan</h2></div>
-        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="container">
+          <div class="page-header">
+            <h2>Galeri Keindahan Pulau Benan</h2>
+          </div>
+          <!-- Tombol Filter Galeri -->
+          <div class="gallery-filters">
+            <button class="filter-btn active" data-filter="all">Semua</button>
+            <button class="filter-btn" data-filter="Pantai">Pantai</button>
+            <button class="filter-btn" data-filter="Aktivitas">
+              Aktivitas
+            </button>
+            <button class="filter-btn" data-filter="Suasana">Suasana</button>
+            <button class="filter-btn" data-filter="Alam">Alam</button>
+          </div>
+          <div class="gallery-grid" id="gallery-grid"></div>
+        </div>
       </section>
 
       <!-- Halaman Tentang Kami -->
       <section id="about-page" class="page-section">
-        <div class="page-header"><h2>Tentang Merayau Benan</h2></div>
-        <div class="about-content">
-          <img
-            src="https://placehold.co/600x400/a855f7/white?text=Merayau+Benan"
-            alt="Tentang Kami"
-          />
-          <h3>Misi Kami</h3>
-          <p>
-            Merayau Benan hadir untuk memudahkan wisatawan dan pengunjung dalam
-            menikmati segala pesona yang ditawarkan oleh Pulau Benan. Kami
-            percaya bahwa setiap perjalanan haruslah mudah, menyenangkan, dan
-            tak terlupakan. Melalui platform ini, kami menghubungkan Anda
-            langsung dengan penyedia layanan lokal terbaik, mulai dari kuliner
-            otentik, penginapan yang nyaman, hingga petualangan wisata yang
-            seru.
-          </p>
-          <h3>Layanan Terpadu</h3>
-          <p>
-            Kami menyediakan platform satu pintu untuk semua kebutuhan Anda di
-            Pulau Benan. Tidak perlu lagi bingung mencari kontak atau informasi.
-            Cukup jelajahi menu kami, pilih layanan yang Anda butuhkan, dan
-            pesan langsung melalui WhatsApp. Didukung oleh Asisten AI, kami juga
-            siap membantu Anda menemukan rekomendasi terbaik yang sesuai dengan
-            keinginan Anda.
-          </p>
-          <h3>Didukung oleh Komunitas Lokal</h3>
-          <p>
-            Setiap pesanan yang Anda buat melalui website ini turut mendukung
-            perekonomian masyarakat lokal Pulau Benan. Kami bekerja sama
-            langsung dengan pemilik homestay, penyedia makanan, nelayan, dan
-            pemandu wisata untuk memastikan Anda mendapatkan pengalaman yang
-            otentik sekaligus memberikan dampak positif bagi komunitas.
-          </p>
+        <div class="container">
+          <div class="page-header"><h2>Tentang Merayau Benan</h2></div>
+          <div class="about-content">
+            <!-- Ganti gambar ini dengan foto tim Anda -->
+            <img
+              src="https://placehold.co/800x400/a855f7/white?text=Foto+Tim+KIR+SMANSA+KATBIT"
+              alt="Tim KIR SMANSA KATBIT"
+              class="about-team-photo"
+            />
+            <h3>Misi Kami</h3>
+            <p>
+              Merayau Benan hadir untuk memudahkan wisatawan dan pengunjung
+              dalam menikmati segala pesona yang ditawarkan oleh Pulau Benan.
+              Kami percaya bahwa setiap perjalanan haruslah mudah, menyenangkan,
+              dan tak terlupakan. Melalui platform ini, kami menghubungkan Anda
+              langsung dengan penyedia layanan lokal terbaik.
+            </p>
+
+            <!-- Bagian Tim Baru -->
+            <div class="team-section">
+              <h3>Tim Kami</h3>
+              <div class="team-grid">
+                <div class="team-member">
+                  <img
+                    src="https://placehold.co/200x200/cccccc/ffffff?text=Foto"
+                    alt="Foto Anggota Tim 1"
+                  />
+                  <h4>Nama Anggota 1</h4>
+                  <p>Peran (Contoh: Ketua Proyek)</p>
+                </div>
+                <div class="team-member">
+                  <img
+                    src="https://placehold.co/200x200/cccccc/ffffff?text=Foto"
+                    alt="Foto Anggota Tim 2"
+                  />
+                  <h4>Nama Anggota 2</h4>
+                  <p>Peran (Contoh: Desainer UI/UX)</p>
+                </div>
+                <div class="team-member">
+                  <img
+                    src="https://placehold.co/200x200/cccccc/ffffff?text=Foto"
+                    alt="Foto Anggota Tim 3"
+                  />
+                  <h4>Nama Anggota 3</h4>
+                  <p>Peran (Contoh: Developer)</p>
+                </div>
+                <div class="team-member">
+                  <img
+                    src="https://placehold.co/200x200/cccccc/ffffff?text=Foto"
+                    alt="Foto Anggota Tim 4"
+                  />
+                  <h4>Nama Anggota 4</h4>
+                  <p>Peran (Contoh: Konten & Riset)</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
     </main>
@@ -393,7 +765,7 @@
     <footer>
       <p>
         &copy; <span id="year"></span> Merayau Benan. Dibuat oleh KIR SMANSA
-        KATBIT.
+        KATBID.
       </p>
     </footer>
     <a href="#" id="back-to-top-btn" title="Kembali ke atas">&#8679;</a>

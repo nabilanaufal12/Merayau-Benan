@@ -20,10 +20,6 @@ export const drinkData = [
         src: "https://akcdn.detik.net.id/community/media/visual/2021/11/05/meski-dari-kelapa-air-kelapa-dan-santan-punya-khasiat-sehat-yang-berbeda-2.jpeg?w=700&q=90",
         source: "Detik.com",
       },
-      {
-        src: "https://placehold.co/600x400/22d3ee/white?text=Kelapa+Segar",
-        source: "Dokumentasi Pribadi",
-      },
     ],
   },
   {
