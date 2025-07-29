@@ -102,10 +102,6 @@ export const foodData = {
           src: "https://image.idntimes.com/post/20180111/gonggong-8f9604e4729d28a98e38323bda8bf76c.jpg?tr=w-1920,f-webp,q-75&width=1920&format=webp&quality=75",
           source: "IDN Times",
         },
-        {
-          src: "https://placehold.co/600x400/f97316/white?text=Gonggong+Segar",
-          source: "Dokumentasi Pribadi",
-        },
       ],
     },
     {
