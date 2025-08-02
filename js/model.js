@@ -9,7 +9,7 @@ import { tourData } from "./data/tour.js";
 import { galleryData } from "./data/gallery.js";
 
 export const model = {
-  whatsAppNumber: "6282223899746", // GANTI DENGAN NOMOR ANDA
+  whatsAppNumber: "6285263176321", // GANTI DENGAN NOMOR ANDA
   data: {
     food: foodData,
     drink: drinkData,
