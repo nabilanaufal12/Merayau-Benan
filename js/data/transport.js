@@ -33,4 +33,15 @@ export const transportData = [
       },
     ],
   },
+  {
+    id: "t1",
+    name: "Caesar Alamsyah (Trip)",
+    desc: "1 trip untuk 6 orang. Harga: Rp 25.000",
+    img: [
+      {
+        src: "assets/img/transport/caesar_alamsyah.jpeg",
+        source: "Dokumentasi Pribadi",
+      },
+    ],
+  },
 ];

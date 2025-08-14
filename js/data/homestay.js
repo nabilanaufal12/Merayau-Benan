@@ -6,7 +6,7 @@ export const homestayData = [
     desc: "Fasilitas: 1 Kamar, Kamar Mandi Dalam, Makan 1x. Harga: Rp 300.000",
     img: [
       {
-        src: "https://placehold.co/600x400/14b8a6/white?text=Homestay+Alamsyah",
+        src: "assets/img/homestay/alamsyah.jpeg",
         source: "Dokumentasi Pribadi",
       },
     ],
@@ -17,7 +17,7 @@ export const homestayData = [
     desc: "Fasilitas: 1 Kamar, Termasuk Makan 1x Sehari. Harga: Rp 300.000",
     img: [
       {
-        src: "https://placehold.co/600x400/14b8a6/white?text=Homestay+Ujang",
+        src: "assets/img/homestay/ujang.jpeg",
         source: "Dokumentasi Pribadi",
       },
     ],
@@ -28,7 +28,7 @@ export const homestayData = [
     desc: "Harga per orang, sudah termasuk makan 1x sehari. Harga: Rp 250.000",
     img: [
       {
-        src: "https://placehold.co/600x400/14b8a6/white?text=Homestay+Jep",
+        src: "assets/img/homestay/jep.jpeg",
         source: "Dokumentasi Pribadi",
       },
     ],
